@@ -30,15 +30,15 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5"></div>
         <div className="container-wide relative">
           <div className="max-w-4xl">
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6">
-              <span className="text-primary">Aaron Greenberg</span>
-              <span className="block text-3xl md:text-4xl mt-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                Redefining How Businesses Leverage AI
-              </span>
+            <h1 className="text-5xl md:text-7xl font-light mb-6">
+              <span className="text-primary">I Build Tools That Create Time</span>
             </h1>
-            <p className="text-xl md:text-2xl text-secondary mb-8 leading-relaxed max-w-3xl">
-              Triple-guild member (DGA, WGA, SAG) with 23 years of elite production experience, 
-              now building AI solutions that liberate businesses from soul-crushing busywork.
+            <p className="text-2xl md:text-3xl text-secondary mb-4 leading-relaxed max-w-3xl font-light">
+              Time to think. Time to grow. Time to live.
+            </p>
+            <p className="text-lg md:text-xl text-secondary mb-8 leading-relaxed max-w-3xl">
+              Business should feel like momentum—not molasses. I design AI-powered tools that eliminate friction, 
+              clarify chaos, and help teams run faster without burning out.
             </p>
             <div className="flex flex-wrap gap-4 mb-12">
               <Link href="/tools" className="btn btn-primary btn-lg">

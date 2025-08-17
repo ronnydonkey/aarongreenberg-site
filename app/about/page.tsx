@@ -34,54 +34,75 @@ export default function AboutPage() {
             <h1 className="h1 mb-6">About Me</h1>
             <div className="space-y-4 text-lg text-secondary">
               <p>
-                I'm Aaron Greenberg, and I'm redefining how businesses leverage AI to reclaim their most valuable asset: time.
+                I'm not here to automate humans out of the loop. I'm here to amplify the parts of work that matter—the thinking, 
+                the building, the connecting—by taking care of the rest.
               </p>
               <p>
-                As a triple-guild member of the DGA, WGA, and SAG, I bring 23 years of elite production experience to the AI revolution. 
-                My credits span Emmy Award-winning television series, national commercials, music videos, documentaries, and pioneering 
-                web series—a body of work that represents mastery of narrative, workflow, and complex creative systems at the highest 
-                levels of entertainment.
-              </p>
-              <p>
-                Today, I channel this unparalleled production expertise into building AI solutions that liberate businesses from 
-                soul-crushing busywork. My unique vision: technology should amplify human creativity, not replace it. Every tool 
-                I develop, every automation strategy I implement, serves a singular mission—giving people back their lives.
+                If your business feels stuck in busywork, there's probably a tool I'm already building to fix it.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Extended Bio Section */}
+      {/* What I'm Building Section */}
       <section className="py-20 bg-elevated">
         <div className="container-narrow">
-          <div className="prose prose-lg max-w-none text-secondary space-y-4">
+          <h2 className="h2 mb-8">What I'm Building Now</h2>
+          <p className="text-lg text-secondary mb-8">
+            At ScatterbrainAI, I'm developing a growing portfolio of focused, opinionated tools—each one crafted to solve 
+            a specific problem cleanly and powerfully.
+          </p>
+          <div className="space-y-6">
+            <div className="border-l-2 border-default pl-6">
+              <h3 className="font-normal text-primary mb-2">Subscription Tracker</h3>
+              <p className="text-secondary">Take control of recurring expenses with AI-powered detection and optimization</p>
+            </div>
+            <div className="border-l-2 border-default pl-6">
+              <h3 className="font-normal text-primary mb-2">CRE Lead Research</h3>
+              <p className="text-secondary">AI-powered commercial real estate opportunity finder that scores deals and sends alerts</p>
+            </div>
+            <div className="border-l-2 border-default pl-6">
+              <h3 className="font-normal text-primary mb-2">AutoBroker Pro</h3>
+              <p className="text-secondary">Smart car shopping assistant that monitors inventory and identifies the best deals</p>
+            </div>
+            <div className="border-l-2 border-default pl-6">
+              <h3 className="font-normal text-primary mb-2">Knowledge Ripper</h3>
+              <p className="text-secondary">Extract structured data from any document (Coming Soon)</p>
+            </div>
+          </div>
+          <p className="text-secondary mt-8">
+            Each tool is fast to use, fast to ship, and built in public. I'm on a mission to create real-world 
+            leverage for people who don't have time to waste.
+          </p>
+        </div>
+      </section>
+
+      {/* How I Got Here Section */}
+      <section className="py-20">
+        <div className="container-narrow">
+          <h2 className="h2 mb-12">How I Got Here</h2>
+          <div className="prose prose-lg max-w-none text-secondary space-y-6">
             <p>
-              As both developer and consultant, I help forward-thinking companies implement intelligent marketing campaigns, 
-              custom AI tools, and workflow automations that transform operations. My approach isn't theoretical—it's 
-              battle-tested through decades of delivering under impossible deadlines with multi-million dollar budgets on the line.
+              I studied film and rhetoric at UC Berkeley, fascinated by how stories shape behavior and how persuasion drives action.
             </p>
             <p>
-              My philosophy is radical transparency: building in public, shipping fast, learning constantly. 
-              I believe no tool is too precious to iterate, no problem too complex to solve.
+              That led to 23 years in Hollywood as a triple-guild member (DGA, WGA, SAG)—producing Emmy Award-winning television series, 
+              national commercials, music videos, documentaries, and pioneering web series. Running complex post-production teams taught 
+              me how to manage chaos, build systems that scale, and translate vision into execution—under pressure, with multi-million 
+              dollar budgets, and without excuses.
             </p>
             <p>
-              Currently dedicating 90% of my focus to AI development while maintaining select production projects, 
-              I represent a new breed of technologist—one who understands that the future isn't about choosing between 
-              human creativity and artificial intelligence, but orchestrating them in perfect harmony.
-            </p>
-            <p>
-              When I'm not revolutionizing workflows, you'll find me in the mountains—living proof that automation 
-              isn't about working more, it's about living better.
+              Now, I bring that same battle-tested expertise to software. Each tool I build carries the DNA of that experience: 
+              creative, structured, human-centered, and fast.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Experience Section */}
-      <section className="py-20">
+      {/* Original Experience Grid - Hidden */}
+      <section className="hidden">
         <div className="container-narrow">
-          <h2 className="h2 mb-12 text-center">My Experience</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="card-surface">
               <div className="flex items-start gap-4">
@@ -146,47 +167,47 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values Section */}
+      {/* How I Work Section */}
       <section className="py-20">
         <div className="container-narrow">
-          <h2 className="h2 mb-12 text-center">My Mission</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <Coffee className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-              <h3 className="h4 mb-2">Time Liberation</h3>
-              <p className="text-secondary">
-                Every automation strategy serves a singular mission—giving 
-                people back their most valuable asset: time.
-              </p>
+          <h2 className="h2 mb-12">How I Work</h2>
+          <div className="space-y-4">
+            <div className="flex items-start gap-4">
+              <span className="text-2xl text-muted">•</span>
+              <p className="text-lg text-secondary">AI is here to serve people—not replace them</p>
             </div>
-            <div className="text-center">
-              <Mountain className="w-16 h-16 text-purple-500 mx-auto mb-4" />
-              <h3 className="h4 mb-2">Human + AI Harmony</h3>
-              <p className="text-secondary">
-                Technology should amplify human creativity, not replace it. 
-                The future is orchestrating them in perfect balance.
-              </p>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl text-muted">•</span>
+              <p className="text-lg text-secondary">Simple > smart. Clear > clever</p>
             </div>
-            <div className="text-center">
-              <Rocket className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h3 className="h4 mb-2">Battle-Tested Solutions</h3>
-              <p className="text-secondary">
-                No theoretical approaches—only proven strategies forged through 
-                decades of impossible deadlines and real-world pressure.
-              </p>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl text-muted">•</span>
+              <p className="text-lg text-secondary">Good tools give back time</p>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="text-2xl text-muted">•</span>
+              <p className="text-lg text-secondary">Build fast. Ship early. Improve in public.</p>
             </div>
           </div>
+          <p className="text-lg text-secondary mt-8">
+            My philosophy is radical transparency: no tool is too precious to iterate, no problem too complex to solve.
+          </p>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* When I'm Not Building Section */}
       <section className="py-20 bg-elevated">
         <div className="container-narrow">
-          <div className="card-surface text-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
-            <h2 className="h2 mb-4">Let's Connect</h2>
-            <p className="text-xl text-secondary mb-8 max-w-2xl mx-auto">
-              I'm always interested in meeting fellow builders, hearing about 
-              interesting problems, or exploring collaboration opportunities.
+          <h2 className="h2 mb-8">When I'm Not Building?</h2>
+          <p className="text-lg text-secondary mb-12">
+            You'll find me in the mountains or by the ocean—skiing, biking, making music with my family, 
+            and living proof that automation isn't about working more, it's about living better.
+          </p>
+          
+          <div className="mt-16 pt-16 border-t border-default text-center">
+            <h3 className="h3 mb-4">Let's Connect</h3>
+            <p className="text-lg text-secondary mb-8 max-w-2xl mx-auto">
+              If your business feels stuck in busywork, there's probably a tool I'm already building to fix it.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/contact" className="btn btn-primary btn-lg">
@@ -194,7 +215,7 @@ export default function AboutPage() {
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
               <Link href="/tools" className="btn btn-secondary btn-lg">
-                Check Out My Tools
+                Explore My Tools
               </Link>
             </div>
           </div>

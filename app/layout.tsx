@@ -9,17 +9,17 @@ import { Analytics } from '@vercel/analytics/react'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Aaron Greenberg - Building AI Tools That Work',
-  description: 'Personal website of Aaron Greenberg. Building AI-powered tools for commercial real estate, automotive, and personal finance.',
-  keywords: 'Aaron Greenberg, AI tools, SaaS, commercial real estate, CRE, automotive, subscription management',
+  title: 'Aaron Greenberg - I Build Tools That Create Time',
+  description: 'Time to think. Time to grow. Time to live. Building AI-powered tools that eliminate friction, clarify chaos, and help teams run faster without burning out.',
+  keywords: 'Aaron Greenberg, AI tools, productivity, automation, ScatterbrainAI, time management, business tools',
   authors: [{ name: 'Aaron Greenberg' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://aarongreenberg.net',
     siteName: 'Aaron Greenberg',
-    title: 'Aaron Greenberg - Building AI Tools That Work',
-    description: 'Building AI-powered tools for real problems. Currently focused on commercial real estate, automotive deals, and personal finance.',
+    title: 'Aaron Greenberg - I Build Tools That Create Time',
+    description: 'Time to think. Time to grow. Time to live. Building AI-powered tools that eliminate friction and help teams run faster.',
     images: [
       {
         url: 'https://aarongreenberg.net/og-image.png',
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aaron Greenberg - Building AI Tools That Work',
-    description: 'Building AI-powered tools for real problems.',
+    title: 'Aaron Greenberg - I Build Tools That Create Time',
+    description: 'Time to think. Time to grow. Time to live.',
     creator: '@aarongreenberg',
     images: ['https://aarongreenberg.net/og-image.png']
   }
