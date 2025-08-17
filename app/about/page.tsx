@@ -34,26 +34,54 @@ export default function AboutPage() {
             <h1 className="h1 mb-6">About Me</h1>
             <div className="space-y-4 text-lg text-secondary">
               <p>
-                Hey, I'm Aaron. I build AI-powered tools that solve real problems 
-                in commercial real estate, automotive, and personal finance.
+                I'm Aaron Greenberg, and I'm redefining how businesses leverage AI to reclaim their most valuable asset: time.
               </p>
               <p>
-                I believe in building in public, shipping fast, and learning from users. 
-                Every tool I create starts with a problem I've personally experienced.
+                As a triple-guild member of the DGA, WGA, and SAG, I bring 23 years of elite production experience to the AI revolution. 
+                My credits span Emmy Award-winning television series, national commercials, music videos, documentaries, and pioneering 
+                web series—a body of work that represents mastery of narrative, workflow, and complex creative systems at the highest 
+                levels of entertainment.
               </p>
               <p>
-                When I'm not coding, you'll find me exploring the outdoors, 
-                reading about emerging tech, or working on my next side project.
+                Today, I channel this unparalleled production expertise into building AI solutions that liberate businesses from 
+                soul-crushing busywork. My unique vision: technology should amplify human creativity, not replace it. Every tool 
+                I develop, every automation strategy I implement, serves a singular mission—giving people back their lives.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Journey Section */}
+      {/* Extended Bio Section */}
       <section className="py-20 bg-elevated">
         <div className="container-narrow">
-          <h2 className="h2 mb-12 text-center">My Journey</h2>
+          <div className="prose prose-lg max-w-none text-secondary space-y-4">
+            <p>
+              As both developer and consultant, I help forward-thinking companies implement intelligent marketing campaigns, 
+              custom AI tools, and workflow automations that transform operations. My approach isn't theoretical—it's 
+              battle-tested through decades of delivering under impossible deadlines with multi-million dollar budgets on the line.
+            </p>
+            <p>
+              My philosophy is radical transparency: building in public, shipping fast, learning constantly. 
+              I believe no tool is too precious to iterate, no problem too complex to solve.
+            </p>
+            <p>
+              Currently dedicating 90% of my focus to AI development while maintaining select production projects, 
+              I represent a new breed of technologist—one who understands that the future isn't about choosing between 
+              human creativity and artificial intelligence, but orchestrating them in perfect harmony.
+            </p>
+            <p>
+              When I'm not revolutionizing workflows, you'll find me in the mountains—living proof that automation 
+              isn't about working more, it's about living better.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section className="py-20">
+        <div className="container-narrow">
+          <h2 className="h2 mb-12 text-center">My Experience</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="card-surface">
               <div className="flex items-start gap-4">
@@ -61,10 +89,10 @@ export default function AboutPage() {
                   <Code className="w-6 h-6 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-primary mb-2">Started Coding</h3>
+                  <h3 className="font-semibold text-primary mb-2">23 Years in Production</h3>
                   <p className="text-secondary">
-                    Got hooked on programming when I realized I could automate 
-                    boring tasks and build things that didn't exist yet.
+                    Emmy Award-winning television, national commercials, music videos, 
+                    documentaries—mastering complex creative systems.
                   </p>
                 </div>
               </div>
@@ -76,10 +104,10 @@ export default function AboutPage() {
                   <Brain className="w-6 h-6 text-purple-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-primary mb-2">Discovered AI</h3>
+                  <h3 className="font-semibold text-primary mb-2">Triple Guild Member</h3>
                   <p className="text-secondary">
-                    Realized AI could be a force multiplier for solving complex problems. 
-                    Started integrating it into every tool I build.
+                    DGA, WGA, SAG—bringing elite entertainment industry expertise 
+                    to the intersection of creativity and technology.
                   </p>
                 </div>
               </div>
@@ -91,10 +119,10 @@ export default function AboutPage() {
                   <Target className="w-6 h-6 text-green-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-primary mb-2">Found My Niche</h3>
+                  <h3 className="font-semibold text-primary mb-2">AI Revolution</h3>
                   <p className="text-secondary">
-                    Focused on building tools for specific industries where 
-                    I saw massive inefficiencies and opportunities.
+                    Channeling production expertise into AI solutions that 
+                    liberate businesses from soul-crushing busywork.
                   </p>
                 </div>
               </div>
@@ -106,10 +134,10 @@ export default function AboutPage() {
                   <Rocket className="w-6 h-6 text-orange-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-primary mb-2">Building in Public</h3>
+                  <h3 className="font-semibold text-primary mb-2">Radical Transparency</h3>
                   <p className="text-secondary">
-                    Started sharing my journey, the wins and the failures. 
-                    Building a community of builders and problem solvers.
+                    Building in public, shipping fast, learning constantly. 
+                    No tool too precious to iterate, no problem too complex to solve.
                   </p>
                 </div>
               </div>
@@ -121,30 +149,30 @@ export default function AboutPage() {
       {/* Values Section */}
       <section className="py-20">
         <div className="container-narrow">
-          <h2 className="h2 mb-12 text-center">What Drives Me</h2>
+          <h2 className="h2 mb-12 text-center">My Mission</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <Coffee className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-              <h3 className="h4 mb-2">Simplicity</h3>
+              <h3 className="h4 mb-2">Time Liberation</h3>
               <p className="text-secondary">
-                Complex problems don't need complex solutions. 
-                I strive to make tools that just work.
+                Every automation strategy serves a singular mission—giving 
+                people back their most valuable asset: time.
               </p>
             </div>
             <div className="text-center">
               <Mountain className="w-16 h-16 text-purple-500 mx-auto mb-4" />
-              <h3 className="h4 mb-2">Impact</h3>
+              <h3 className="h4 mb-2">Human + AI Harmony</h3>
               <p className="text-secondary">
-                Every line of code should create real value. 
-                I measure success by problems solved, not features shipped.
+                Technology should amplify human creativity, not replace it. 
+                The future is orchestrating them in perfect balance.
               </p>
             </div>
             <div className="text-center">
               <Rocket className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h3 className="h4 mb-2">Speed</h3>
+              <h3 className="h4 mb-2">Battle-Tested Solutions</h3>
               <p className="text-secondary">
-                Ship fast, get feedback, iterate. 
-                Perfect is the enemy of done.
+                No theoretical approaches—only proven strategies forged through 
+                decades of impossible deadlines and real-world pressure.
               </p>
             </div>
           </div>

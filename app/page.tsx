@@ -33,12 +33,12 @@ export default function HomePage() {
             <h1 className="text-5xl md:text-7xl font-extrabold mb-6">
               <span className="text-primary">Aaron Greenberg</span>
               <span className="block text-3xl md:text-4xl mt-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                Building AI Tools That Actually Work
+                Redefining How Businesses Leverage AI
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-secondary mb-8 leading-relaxed max-w-3xl">
-              I solve real problems with code. Currently building tools for commercial real estate, 
-              automotive deals, and personal finance. Sharing everything I learn along the way.
+              Triple-guild member (DGA, WGA, SAG) with 23 years of elite production experience, 
+              now building AI solutions that liberate businesses from soul-crushing busywork.
             </p>
             <div className="flex flex-wrap gap-4 mb-12">
               <Link href="/tools" className="btn btn-primary btn-lg">
