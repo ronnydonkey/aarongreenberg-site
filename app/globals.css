@@ -1,36 +1,38 @@
-/* AMG Toolkit - Theme-aware Global Styles */
+/* Aaron Greenberg - Minimalist Professional Theme */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  /* Light mode variables */
+  /* Minimalist light mode */
   :root {
-    --color-bg-base: 249 250 251; /* gray-50 */
+    --color-bg-base: 255 255 255; /* pure white */
     --color-bg-surface: 255 255 255; /* white */
-    --color-bg-elevated: 243 244 246; /* gray-100 */
-    --color-border: 229 231 235; /* gray-200 */
-    --color-border-hover: 209 213 219; /* gray-300 */
-    --color-text-primary: 17 24 39; /* gray-900 */
-    --color-text-secondary: 55 65 81; /* gray-700 */
-    --color-text-muted: 107 114 128; /* gray-500 */
+    --color-bg-elevated: 250 250 250; /* almost white */
+    --color-border: 240 240 240; /* very light gray */
+    --color-border-hover: 220 220 220; /* light gray */
+    --color-text-primary: 0 0 0; /* pure black */
+    --color-text-secondary: 64 64 64; /* dark gray */
+    --color-text-muted: 128 128 128; /* medium gray */
   }
 
-  /* Dark mode variables */
+  /* Minimalist dark mode */
   .dark {
-    --color-bg-base: 2 6 23; /* slate-950 */
-    --color-bg-surface: 15 23 42; /* slate-900 with opacity */
-    --color-bg-elevated: 30 41 59; /* slate-800 */
-    --color-border: 51 65 85; /* slate-700 */
-    --color-border-hover: 71 85 105; /* slate-600 */
-    --color-text-primary: 248 250 252; /* slate-50 */
-    --color-text-secondary: 226 232 240; /* slate-200 */
-    --color-text-muted: 148 163 184; /* slate-400 */
+    --color-bg-base: 0 0 0; /* pure black */
+    --color-bg-surface: 17 17 17; /* almost black */
+    --color-bg-elevated: 26 26 26; /* very dark gray */
+    --color-border: 38 38 38; /* dark gray */
+    --color-border-hover: 64 64 64; /* medium gray */
+    --color-text-primary: 255 255 255; /* pure white */
+    --color-text-secondary: 204 204 204; /* light gray */
+    --color-text-muted: 128 128 128; /* medium gray */
   }
 
   body {
-    @apply bg-base text-primary antialiased transition-colors duration-200;
+    @apply bg-base text-primary antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.015em;
   }
   
   /* Safe area padding for mobile devices */
@@ -45,7 +47,7 @@
   }
 
   *:focus-visible {
-    @apply ring-2 ring-blue-500 ring-offset-2 ring-offset-base;
+    @apply ring-1 ring-black dark:ring-white ring-offset-2 ring-offset-base;
   }
 }
 
@@ -75,32 +77,31 @@
   .text-secondary { color: rgb(var(--color-text-secondary) / 1); }
   .text-muted { color: rgb(var(--color-text-muted) / 1); }
 
-  /* Theme-aware components */
+  /* Minimalist card components */
   .card-surface {
-    @apply rounded-2xl border border-default bg-surface p-6 transition-all duration-200;
-    @apply shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:bg-slate-900/60 dark:shadow-[0_2px_16px_rgba(0,0,0,0.25)];
+    @apply bg-surface p-8 md:p-12 transition-colors duration-300;
+    @apply border-b border-default;
   }
 
   .card-hover {
-    @apply hover:border-hover cursor-pointer;
-    @apply hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] dark:hover:bg-slate-900/80 dark:hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)];
+    @apply hover:bg-elevated cursor-pointer;
   }
 
-  /* Typography with theme support */
+  /* Minimalist typography */
   .h1 {
-    @apply text-3xl md:text-5xl font-extrabold text-primary tracking-tight;
+    @apply text-4xl md:text-5xl lg:text-6xl font-light text-primary tracking-tight leading-[1.1];
   }
 
   .h2 {
-    @apply text-2xl md:text-3xl font-bold text-primary;
+    @apply text-2xl md:text-3xl lg:text-4xl font-light text-primary tracking-tight;
   }
 
   .h3 {
-    @apply text-xl md:text-2xl font-semibold text-primary;
+    @apply text-xl md:text-2xl font-normal text-primary;
   }
 
   .h4 {
-    @apply text-lg md:text-xl font-semibold text-primary;
+    @apply text-lg md:text-xl font-normal text-primary;
   }
 
   .text-body {
@@ -122,26 +123,24 @@
     background-repeat: no-repeat;
   }
 
-  /* Buttons with theme support */
+  /* Minimalist buttons */
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold 
-           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 
+    @apply inline-flex items-center justify-center px-6 py-3 font-normal 
+           transition-all duration-300 focus:outline-none 
            disabled:opacity-50 disabled:cursor-not-allowed;
-    @apply focus:ring-offset-base;
+    @apply border border-transparent;
   }
 
   .btn-primary {
-    @apply btn bg-blue-500 text-white hover:bg-blue-400 focus:ring-blue-500;
+    @apply btn bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200;
   }
 
   .btn-secondary {
-    @apply btn border border-default bg-surface text-secondary hover:bg-elevated focus:ring-slate-500;
-    @apply dark:bg-slate-900/60 dark:hover:bg-slate-800;
+    @apply btn border-current text-primary hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black;
   }
 
   .btn-ghost {
-    @apply btn text-muted hover:text-secondary hover:bg-surface focus:ring-slate-500;
-    @apply dark:hover:bg-slate-800/50;
+    @apply btn text-muted hover:text-primary underline underline-offset-4;
   }
   
   /* Button sizes */

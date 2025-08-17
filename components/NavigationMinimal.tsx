@@ -14,12 +14,12 @@ const navItems = [
   { href: '/contact', label: 'Contact' }
 ]
 
-export default function Navigation() {
+export default function NavigationMinimal() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-base/95 backdrop-blur-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-base/80 backdrop-blur-md">
       <div className="container-wide">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -28,7 +28,7 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-12">
             {navItems.map((item) => {
               const isActive = pathname === item.href || 
                              (item.href !== '/' && pathname.startsWith(item.href))
@@ -36,10 +36,10 @@ export default function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm tracking-wide transition-opacity ${
+                  className={`text-sm tracking-wide transition-colors ${
                     isActive 
                       ? 'text-primary' 
-                      : 'text-muted hover:text-primary hover:opacity-100 opacity-60'
+                      : 'text-muted hover:text-primary'
                   }`}
                 >
                   {item.label}
@@ -54,17 +54,17 @@ export default function Navigation() {
             <ThemeToggle />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-muted hover:text-primary"
+              className="p-2 text-primary"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-default">
+          <div className="md:hidden py-8 border-t border-default">
             {navItems.map((item) => {
               const isActive = pathname === item.href || 
                              (item.href !== '/' && pathname.startsWith(item.href))
@@ -72,9 +72,9 @@ export default function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block py-3 font-medium transition-colors ${
+                  className={`block py-3 text-sm tracking-wide transition-colors ${
                     isActive 
-                      ? 'text-blue-500' 
+                      ? 'text-primary' 
                       : 'text-muted hover:text-primary'
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
