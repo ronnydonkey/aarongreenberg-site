@@ -32,6 +32,12 @@
   body {
     @apply bg-base text-primary antialiased transition-colors duration-200;
   }
+  
+  /* Safe area padding for mobile devices */
+  .px-safe {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
 
   /* Custom focus styles */
   *:focus {
@@ -44,6 +50,21 @@
 }
 
 @layer components {
+  /* Container utilities with safe boundaries */
+  .container-wide {
+    @apply mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl;
+  }
+  
+  .container-narrow {
+    @apply mx-auto px-6 sm:px-8 lg:px-12 max-w-4xl;
+  }
+  
+  /* Main layout wrapper */
+  .main-wrapper {
+    @apply min-h-screen px-safe;
+  }
+
+
   /* Dynamic color utilities */
   .bg-base { background-color: rgb(var(--color-bg-base) / 1); }
   .bg-surface { background-color: rgb(var(--color-bg-surface) / 1); }
@@ -121,6 +142,15 @@
   .btn-ghost {
     @apply btn text-muted hover:text-secondary hover:bg-surface focus:ring-slate-500;
     @apply dark:hover:bg-slate-800/50;
+  }
+  
+  /* Button sizes */
+  .btn-sm {
+    @apply text-sm px-3 py-1.5;
+  }
+  
+  .btn-lg {
+    @apply text-base px-6 py-3;
   }
 
   /* Badges with theme support */
