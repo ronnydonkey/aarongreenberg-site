@@ -33,7 +33,7 @@ export default function AboutPage() {
             </p>
             <div className="space-y-2 text-lg text-secondary mb-8">
               <p>• AI serves people—not replaces them</p>
-              <p>• Simple > smart. Clear > clever</p>
+              <p>• Simple &gt; smart. Clear &gt; clever</p>
               <p>• Good tools give back time</p>
               <p>• Ship fast. Learn in public</p>
             </div>
