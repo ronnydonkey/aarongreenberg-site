@@ -57,14 +57,12 @@
   /* Theme-aware components */
   .card-surface {
     @apply rounded-2xl border border-default bg-surface p-6 transition-all duration-200;
-    @apply dark:bg-slate-900/60 dark:shadow-[0_2px_16px_rgba(0,0,0,0.25)];
-    @apply light:shadow-[0_2px_8px_rgba(0,0,0,0.04)];
+    @apply shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:bg-slate-900/60 dark:shadow-[0_2px_16px_rgba(0,0,0,0.25)];
   }
 
   .card-hover {
     @apply hover:border-hover cursor-pointer;
-    @apply dark:hover:bg-slate-900/80 dark:hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)];
-    @apply light:hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)];
+    @apply hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] dark:hover:bg-slate-900/80 dark:hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)];
   }
 
   /* Typography with theme support */
