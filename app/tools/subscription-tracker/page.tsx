@@ -110,10 +110,13 @@ export default function SubscriptionTrackerPage() {
       })
       
       if (!response.ok) {
-        throw new Error('Failed to parse PDF')
+        const error = await response.json()
+        console.error('API Error:', error)
+        throw new Error(error.error || 'Failed to parse PDF')
       }
       
       const result = await response.json()
+      console.log('API Response:', result)
       
       if (result.success && result.data?.subscriptions?.length > 0) {
         // Add new subscriptions (avoiding duplicates)
@@ -147,11 +150,12 @@ export default function SubscriptionTrackerPage() {
           )
         }
       } else {
+        console.log('No subscriptions found or success=false:', result)
         toast.error('No subscriptions found in this statement', { id: toastId })
       }
     } catch (error) {
       console.error('Upload error:', error)
-      toast.error('Failed to analyze bank statement', { id: toastId })
+      toast.error(error instanceof Error ? error.message : 'Failed to analyze bank statement', { id: toastId })
     }
   }
 
