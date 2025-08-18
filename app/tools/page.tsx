@@ -8,10 +8,35 @@ import {
   Users,
   TrendingUp,
   Clock,
-  CheckCircle
+  CheckCircle,
+  ShoppingCart
 } from 'lucide-react'
 
 const tools = [
+  {
+    id: 'arbitrage-scanner',
+    name: 'Arbitrage Scanner',
+    description: 'Find profitable resale opportunities across online marketplaces. AI analyzes pricing, calculates ROI, and automates purchasing with approval workflows.',
+    icon: ShoppingCart,
+    color: 'from-cyan-500 to-blue-500',
+    status: 'Live',
+    statusColor: 'badge-success',
+    metrics: {
+      users: '43',
+      saved: '$487K',
+      roi: '37.7%'
+    },
+    features: [
+      'Multi-platform scanning (eBay, FB, etc.)',
+      'Automated ROI calculations',
+      'Manual approval workflow',
+      'Credit card management',
+      'Inventory tracking'
+    ],
+    pricing: '$79/month',
+    url: 'https://scatterbrainai.com/arbitrage',
+    cta: 'Start Arbitrage'
+  },
   {
     id: 'cre-research',
     name: 'CRE Lead Research',
@@ -32,9 +57,9 @@ const tools = [
       'Real-time alerts',
       'Export to CSV/Excel'
     ],
-    pricing: '$99/month',
+    pricing: 'Enterprise',
     url: 'https://scatterbrainai.com/cre-tool',
-    cta: 'Start Finding Deals'
+    cta: 'Request Demo'
   },
   {
     id: 'autobroker',
@@ -56,9 +81,9 @@ const tools = [
       'Market trend analysis',
       'Negotiation insights'
     ],
-    pricing: '$49/month',
+    pricing: 'Enterprise',
     url: 'https://scatterbrainai.com/auto-broker',
-    cta: 'Find Your Car'
+    cta: 'Request Demo'
   },
   {
     id: 'subscription-tracker',
@@ -128,15 +153,15 @@ export default function ToolsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
               <div className="badge badge-best mb-4">BEST VALUE</div>
-              <h2 className="h3 mb-3">All Access Bundle</h2>
+              <h2 className="h3 mb-3">Consumer Tools Bundle</h2>
               <p className="text-secondary mb-4">
-                Get access to all current and future tools for one low price. 
+                Get Arbitrage Scanner + Subscription Tracker + Knowledge Ripper for one low price. 
                 Save 40% compared to individual subscriptions.
               </p>
               <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-4xl font-bold text-primary">$149</span>
+                <span className="text-4xl font-bold text-primary">$79</span>
                 <span className="text-secondary">/month</span>
-                <span className="text-sm text-muted line-through">$246</span>
+                <span className="text-sm text-muted line-through">$127</span>
               </div>
               <Link href="https://scatterbrainai.com/pricing" className="btn btn-primary btn-lg">
                 Get All Access
@@ -145,11 +170,11 @@ export default function ToolsPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-1">4+</div>
-                <div className="text-sm text-muted">Premium Tools</div>
+                <div className="text-3xl font-bold text-primary mb-1">3</div>
+                <div className="text-sm text-muted">Consumer Tools</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-500 mb-1">$97</div>
+                <div className="text-3xl font-bold text-green-500 mb-1">$48</div>
                 <div className="text-sm text-muted">Monthly Savings</div>
               </div>
               <div className="text-center">
@@ -222,6 +247,15 @@ export default function ToolsPage() {
                           <span className="text-sm">
                             <span className="font-semibold text-primary">{tool.metrics.accuracy}</span>
                             <span className="text-muted"> accuracy</span>
+                          </span>
+                        </div>
+                      )}
+                      {tool.metrics.roi && (
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4 text-muted" />
+                          <span className="text-sm">
+                            <span className="font-semibold text-green-500">{tool.metrics.roi}</span>
+                            <span className="text-muted"> avg ROI</span>
                           </span>
                         </div>
                       )}
