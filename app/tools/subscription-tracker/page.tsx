@@ -102,8 +102,9 @@ export default function SubscriptionTrackerPage() {
     try {
       const formData = new FormData()
       formData.append('file', file)
+      formData.append('type', 'bank_statement')
       
-      const response = await fetch('/api/subscription-tracker/parse', {
+      const response = await fetch('https://subscription-tracker-parser-production.up.railway.app/parse', {
         method: 'POST',
         body: formData
       })
@@ -114,25 +115,34 @@ export default function SubscriptionTrackerPage() {
       
       const result = await response.json()
       
-      if (result.success && result.subscriptions.length > 0) {
+      if (result.success && result.data?.subscriptions?.length > 0) {
         // Add new subscriptions (avoiding duplicates)
         const existingNames = subscriptions.map(s => s.name.toLowerCase())
-        const newSubs = result.subscriptions.filter(
-          (sub: Subscription) => !existingNames.includes(sub.name.toLowerCase())
-        )
+        const newSubs = result.data.subscriptions.filter(
+          (sub: any) => !existingNames.includes(sub.name.toLowerCase())
+        ).map((sub: any) => ({
+          id: Date.now().toString() + Math.random(),
+          name: sub.name,
+          provider: sub.name,
+          category: sub.category || 'other',
+          amount: sub.amount,
+          billingCycle: sub.frequency === 'annual' ? 'annual' : 'monthly',
+          nextBillingDate: sub.date,
+          status: 'active'
+        }))
         
         setSubscriptions([...subscriptions, ...newSubs])
         setShowUploadModal(false)
         
         toast.success(
-          `Found ${result.subscriptions.length} subscriptions! ${newSubs.length} new ones added.`,
+          `Found ${result.data.subscriptions.length} subscriptions! ${newSubs.length} new ones added.`,
           { id: toastId }
         )
         
         // Show summary
-        if (result.summary) {
+        if (result.data.summary) {
           toast.success(
-            `Monthly total: $${result.summary.total_monthly.toFixed(2)}`,
+            `Monthly total: $${result.data.summary.total_monthly.toFixed(2)}`,
             { duration: 5000 }
           )
         }
