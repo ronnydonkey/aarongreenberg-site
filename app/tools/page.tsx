@@ -91,8 +91,8 @@ const tools = [
     description: 'Take control of recurring expenses. Upload bank statements and let AI identify, categorize, and optimize your subscriptions.',
     icon: CreditCard,
     color: 'from-purple-500 to-pink-500',
-    status: 'Live',
-    statusColor: 'badge-success',
+    status: 'Beta',
+    statusColor: 'badge-primary',
     metrics: {
       users: '2,341',
       saved: '$847K',
@@ -106,7 +106,7 @@ const tools = [
       'Savings recommendations'
     ],
     pricing: '$9/month',
-    url: 'https://scatterbrainai.com/subscription-tracker',
+    url: '/tools/subscription-tracker',
     cta: 'Track Subscriptions'
   },
   {
