@@ -32,9 +32,9 @@ const tools = [
       'Shows spending trends',
       'Export to spreadsheet'
     ],
-    pricing: 'Free',
+    pricing: 'Free Demo',
     url: '/tools/subscription-tracker',
-    cta: 'Find My Subscriptions',
+    cta: 'Try Demo',
     internal: true
   },
   {

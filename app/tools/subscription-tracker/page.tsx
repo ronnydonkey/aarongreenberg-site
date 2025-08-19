@@ -10,7 +10,10 @@ import {
   AlertCircle,
   X,
   BarChart3,
-  CreditCard
+  CreditCard,
+  Lock,
+  Shield,
+  CheckCircle2
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -25,12 +28,67 @@ interface Subscription {
   status: string
 }
 
+// Demo data
+const demoSubscriptions: Subscription[] = [
+  {
+    id: 'demo-1',
+    name: 'StreamFlix Plus',
+    provider: 'StreamFlix',
+    category: 'streaming',
+    amount: 17.99,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-15',
+    status: 'active'
+  },
+  {
+    id: 'demo-2',
+    name: 'CloudStorage Pro',
+    provider: 'CloudStorage Inc',
+    category: 'software',
+    amount: 9.99,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-20',
+    status: 'active'
+  },
+  {
+    id: 'demo-3',
+    name: 'NewsDigest Premium',
+    provider: 'NewsDigest',
+    category: 'other',
+    amount: 149.00,
+    billingCycle: 'annual',
+    nextBillingDate: '2024-08-01',
+    status: 'active'
+  },
+  {
+    id: 'demo-4',
+    name: 'FitnessPro Gym',
+    provider: 'FitnessPro',
+    category: 'fitness',
+    amount: 49.99,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-05',
+    status: 'active'
+  }
+]
+
+const demoTransactions = [
+  { date: '2024-01-15', description: 'STREAMFLIX PLUS MONTHLY', amount: 17.99, merchant: 'StreamFlix' },
+  { date: '2024-01-14', description: 'GROCERY MART #4521', amount: 127.83, merchant: 'Grocery Mart' },
+  { date: '2024-01-12', description: 'CLOUDSTORAGE PRO SUBSCRIPTION', amount: 9.99, merchant: 'CloudStorage' },
+  { date: '2024-01-10', description: 'COFFEE HOUSE', amount: 5.47, merchant: 'Coffee House' },
+  { date: '2024-01-08', description: 'FITNESSPRO GYM MONTHLY', amount: 49.99, merchant: 'FitnessPro' },
+  { date: '2024-01-05', description: 'STREAMFLIX PLUS MONTHLY', amount: 17.99, merchant: 'StreamFlix' },
+]
+
 export default function SubscriptionTrackerPage() {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  const [isDemo, setIsDemo] = useState(true)
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>(demoSubscriptions)
   const [showAddModal, setShowAddModal] = useState(false)
   const [showUploadModal, setShowUploadModal] = useState(false)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [activeTab, setActiveTab] = useState<'tracker' | 'analytics' | 'review'>('tracker')
-  const [importedTransactions, setImportedTransactions] = useState<any[]>([])
+  const [importedTransactions, setImportedTransactions] = useState<any[]>(demoTransactions)
   const [possibleSubscriptions, setPossibleSubscriptions] = useState<any[]>([])
 
   // Calculate metrics
@@ -158,6 +216,27 @@ export default function SubscriptionTrackerPage() {
 
   return (
     <div className="container-wide py-8">
+      {/* Demo Banner */}
+      {isDemo && (
+        <div className="mb-8 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-yellow-500" />
+              <div>
+                <p className="font-medium text-yellow-200">Demo Mode</p>
+                <p className="text-sm text-yellow-300/80">You're viewing sample data. Sign up to analyze your real bank statements securely.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowUpgradeModal(true)}
+              className="btn btn-primary btn-sm"
+            >
+              Sign Up for Full Version
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Page Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
@@ -166,14 +245,14 @@ export default function SubscriptionTrackerPage() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setShowUploadModal(true)}
+            onClick={() => isDemo ? setShowUpgradeModal(true) : setShowUploadModal(true)}
             className="btn btn-secondary"
           >
             <Upload className="w-4 h-4 mr-2" />
             Import Statement
           </button>
           <button
-            onClick={() => setShowAddModal(true)}
+            onClick={() => isDemo ? setShowUpgradeModal(true) : setShowAddModal(true)}
             className="btn btn-primary"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -632,6 +711,79 @@ export default function SubscriptionTrackerPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="card-surface max-w-md w-full">
+            <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+              <h2 className="h3">Upgrade to Full Version</h2>
+              <button
+                onClick={() => setShowUpgradeModal(false)}
+                className="text-slate-400 hover:text-slate-200"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="w-8 h-8 text-green-500" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Secure Your Financial Data</h3>
+                <p className="text-slate-400">
+                  Get full access with bank-level security and data encryption
+                </p>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Bank-Level Encryption</p>
+                    <p className="text-sm text-slate-400">Your data is encrypted at rest and in transit</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Private & Secure</p>
+                    <p className="text-sm text-slate-400">Only you can access your financial data</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Full Features</p>
+                    <p className="text-sm text-slate-400">Import unlimited statements, export reports, and more</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-800/50 rounded-lg p-4 mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-lg font-medium">Full Access</span>
+                  <span className="text-2xl font-bold text-primary">Free</span>
+                </div>
+                <p className="text-sm text-slate-400">During beta - no credit card required</p>
+              </div>
+
+              <a
+                href="https://app.subscriptiontracker.ai/signup"
+                className="btn btn-primary w-full mb-3"
+              >
+                <Lock className="w-4 h-4 mr-2" />
+                Create Secure Account
+              </a>
+              
+              <p className="text-xs text-center text-slate-500">
+                By signing up, you agree to our Terms of Service and Privacy Policy
+              </p>
+            </div>
           </div>
         </div>
       )}
