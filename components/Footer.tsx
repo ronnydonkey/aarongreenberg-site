@@ -21,9 +21,16 @@ const footerLinks = [
     title: 'Resources',
     links: [
       { label: 'Blog', href: '/blog' },
-      { label: 'Newsletter', href: '/newsletter' },
       { label: 'About', href: '/about' },
       { label: 'Contact', href: '/contact' }
+    ]
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Refund Policy', href: '/refund' }
     ]
   },
   {

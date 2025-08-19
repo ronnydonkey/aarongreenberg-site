@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { 
   Plus, 
   Upload, 
@@ -985,6 +986,12 @@ export default function SubscriptionTrackerPage() {
               
               <p className="text-xs text-center text-slate-500 mt-4">
                 No spam. We'll only email about Subscription Tracker updates.
+              </p>
+              <p className="text-xs text-center text-slate-500 mt-2">
+                By joining, you agree to our{' '}
+                <Link href="/terms" className="text-blue-500 hover:underline">Terms</Link>
+                {' '}and{' '}
+                <Link href="/privacy" className="text-blue-500 hover:underline">Privacy Policy</Link>
               </p>
             </div>
           </div>
