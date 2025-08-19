@@ -146,8 +146,7 @@ export default function PrivacyPage() {
           </p>
           <p className="text-secondary">
             Aaron Greenberg<br />
-            Email: privacy@aarongreenberg.net<br />
-            Or: aaron@aarongreenberg.net
+            Email: aaron@aarongreenberg.net
           </p>
         </section>
       </div>

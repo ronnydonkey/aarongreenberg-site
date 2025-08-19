@@ -13,7 +13,7 @@ async function sendNotificationEmail(email: string, tool: string) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     
     await resend.emails.send({
-      from: 'Waitlist <noreply@aarongreenberg.net>',
+      from: 'Aaron Greenberg <aaron@aarongreenberg.net>',
       to: process.env.NOTIFICATION_EMAIL,
       subject: `New waitlist signup: ${tool}`,
       html: `

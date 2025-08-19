@@ -34,7 +34,7 @@ export default function RefundPage() {
             To request a refund within your 7-day trial period:
           </p>
           <ol className="list-decimal list-inside text-secondary mb-4 space-y-2">
-            <li>Email us at refunds@aarongreenberg.net</li>
+            <li>Email us at aaron@aarongreenberg.net</li>
             <li>Include your account email and order number</li>
             <li>Let us know why you're canceling (optional but helpful)</li>
           </ol>
@@ -91,7 +91,7 @@ export default function RefundPage() {
           </p>
           <ul className="list-disc list-inside text-secondary mb-4 space-y-2">
             <li>Through your account dashboard</li>
-            <li>By emailing support@aarongreenberg.net</li>
+            <li>By emailing aaron@aarongreenberg.net</li>
             <li>Cancellation takes effect at the end of your current billing period</li>
             <li>You'll retain access until the end of your paid period</li>
           </ul>
@@ -103,7 +103,7 @@ export default function RefundPage() {
             If you have any questions about our refund policy, please contact:
           </p>
           <p className="text-secondary">
-            Email: support@aarongreenberg.net<br />
+            Email: aaron@aarongreenberg.net<br />
             Response time: Within 24 hours
           </p>
         </section>
