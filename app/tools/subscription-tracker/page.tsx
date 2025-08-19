@@ -166,9 +166,17 @@ export default function SubscriptionTrackerPage() {
         console.log('Failed to parse:', result)
         toast.error('Failed to parse bank statement', { id: toastId })
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to analyze bank statement', { id: toastId })
+      // Check if it's the CSV not allowed error
+      if (error?.message?.includes('Only PDF') || (file.name.toLowerCase().endsWith('.csv') && error?.message?.includes('allowed'))) {
+        toast.error(
+          'CSV support is coming soon! For now, please use PDF bank statements. The parser is being updated to support CSV files.',
+          { id: toastId, duration: 6000 }
+        )
+      } else {
+        toast.error(error instanceof Error ? error.message : 'Failed to analyze bank statement', { id: toastId })
+      }
     }
   }
 
