@@ -106,7 +106,7 @@ export default function SubscriptionTrackerPage() {
       formData.append('file', file)
       formData.append('type', 'bank_statement')
       
-      const response = await fetch('https://subscription-tracker-parser-production.up.railway.app/parse', {
+      const response = await fetch('/api/subscription-tracker/parse', {
         method: 'POST',
         body: formData
       })
