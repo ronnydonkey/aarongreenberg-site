@@ -432,7 +432,7 @@ export default function SubscriptionTrackerPage() {
                   </thead>
                   <tbody className="text-sm">
                     {importedTransactions.map((transaction, idx) => (
-                      <tr key={idx} className="border-b border-slate-900 hover:bg-slate-900/30">
+                      <tr key={`trans-${idx}`} className="border-b border-slate-900 hover:bg-slate-900/30">
                         <td className="py-3 pr-4 text-slate-400">
                           {transaction.date || 'N/A'}
                         </td>
@@ -440,7 +440,7 @@ export default function SubscriptionTrackerPage() {
                           {transaction.description || transaction.merchant || 'Unknown'}
                         </td>
                         <td className="py-3 pr-4 text-right text-slate-200">
-                          ${(transaction.amount || 0).toFixed(2)}
+                          ${typeof transaction.amount === 'number' ? transaction.amount.toFixed(2) : '0.00'}
                         </td>
                         <td className="py-3">
                           <button
