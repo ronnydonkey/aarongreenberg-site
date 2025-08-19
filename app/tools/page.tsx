@@ -66,28 +66,29 @@ const tools = [
   },
   {
     id: 'auto-broker',
-    name: 'Auto Broker Assistant',
-    story: 'A broker I\'ve bought cars from reached out: "I\'m drowning in inventory updates and missing deals for my clients." Built him a tool that watches everything so he doesn\'t have to.',
-    description: 'Monitors dealer inventory, tracks price changes, and alerts when the perfect car hits the market.',
+    name: 'Gary\'s Car Broker',
+    story: 'Gary reached out: "I need a website to showcase my pre-negotiated deals. People think I work for Leasehacker!" Built him a clean landing page where he can post weekly hot deals.',
+    description: 'Pre-negotiated car deals with transparent pricing. No haggling, just pick your car and Gary handles everything.',
     icon: Car,
-    color: 'from-green-500 to-emerald-500',
-    status: 'In Development',
-    statusColor: 'badge-default',
+    color: 'from-blue-500 to-purple-500',
+    status: 'Live Demo',
+    statusColor: 'badge-success',
     metrics: {
-      inventoryTracked: '147K',
-      priceDropsCaught: '8,492',
-      perfectMatches: '2,847'
+      monthlyLeads: '268',
+      avgSavings: '$7,800',
+      dealsActive: '12'
     },
     features: [
-      'Watches multiple dealer systems',
-      'Tracks price drops in real-time',
-      'Matches cars to client wishlists',
-      'Sends instant alerts',
-      'Negotiation leverage data'
+      'Weekly hot deals updates',
+      'Transparent pricing breakdown',
+      'Full service from inquiry to delivery',
+      '7+ years broker experience',
+      'Flat $500 broker fee'
     ],
-    pricing: 'Custom',
-    url: '#',
-    cta: 'Coming Soon'
+    pricing: 'Free to Browse',
+    url: '/tools/car-broker',
+    cta: 'View Hot Deals',
+    internal: true
   },
   {
     id: 'communications-hub',
@@ -232,8 +233,8 @@ export default function ToolsPage() {
                       <div className="text-3xl font-bold text-primary">{tool.pricing}</div>
                     </div>
 
-                    {/* Subscription Tracker has demo */}
-                    {tool.id === 'subscription-tracker' ? (
+                    {/* Tools with internal pages */}
+                    {tool.internal && tool.url !== '#' ? (
                       <Link
                         href={tool.url}
                         className="btn btn-primary w-full mb-4"

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { 
   Plus, 
@@ -14,9 +14,13 @@ import {
   CreditCard,
   Lock,
   Shield,
-  CheckCircle2
+  CheckCircle2,
+  HelpCircle,
+  Info,
+  Sparkles
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useAnalytics, ANALYTICS_EVENTS } from '@/hooks/useAnalytics'
 
 interface Subscription {
   id: string
@@ -134,6 +138,12 @@ export default function SubscriptionTrackerPage() {
   const [possibleSubscriptions, setPossibleSubscriptions] = useState<any[]>([])
   const [waitlistEmail, setWaitlistEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [showTooltip, setShowTooltip] = useState<string | null>(null)
+  const [isFirstVisit, setIsFirstVisit] = useState(true)
+  
+  const { track } = useAnalytics()
 
   // Calculate metrics
   const totalMonthly = subscriptions
@@ -159,14 +169,61 @@ export default function SubscriptionTrackerPage() {
   }
 
   const handleAddSubscription = (data: any) => {
+    // Validate data
+    if (!data.name || data.name.trim().length < 2) {
+      toast.error('Please enter a valid subscription name')
+      return
+    }
+    
+    if (data.amount <= 0 || isNaN(data.amount)) {
+      toast.error('Please enter a valid amount')
+      return
+    }
+    
+    // Check for duplicates
+    const isDuplicate = subscriptions.some(
+      sub => sub.name.toLowerCase() === data.name.trim().toLowerCase()
+    )
+    
+    if (isDuplicate) {
+      toast.error('This subscription already exists')
+      return
+    }
+    
     const newSub: Subscription = {
       id: Date.now().toString(),
-      ...data,
+      name: data.name.trim(),
+      provider: data.provider?.trim() || data.name.trim(),
+      category: data.category,
+      amount: parseFloat(data.amount),
+      billingCycle: data.billingCycle,
+      nextBillingDate: data.nextBillingDate,
       status: 'active'
     }
+    
     setSubscriptions([...subscriptions, newSub])
     setShowAddModal(false)
-    toast.success('Subscription added successfully')
+    toast.success('Subscription added successfully!')
+    
+    track({
+      event: ANALYTICS_EVENTS.SUBSCRIPTION_ADDED,
+      tool: 'subscription-tracker',
+      properties: {
+        category: data.category,
+        billingCycle: data.billingCycle,
+        isDemo
+      }
+    })
+    
+    // If demo mode, suggest trying upload
+    if (isDemo && subscriptions.length === demoSubscriptions.length) {
+      setTimeout(() => {
+        toast('Try uploading a bank statement to find more!', {
+          icon: '💡',
+          duration: 4000
+        })
+      }, 1500)
+    }
   }
 
   const handleWaitlistSignup = async (e: React.FormEvent) => {
@@ -190,6 +247,14 @@ export default function SubscriptionTrackerPage() {
         toast.success('You\'re on the list! We\'ll notify you when the secure version launches.')
         setShowUpgradeModal(false)
         setWaitlistEmail('')
+        
+        track({
+          event: ANALYTICS_EVENTS.WAITLIST_JOINED,
+          tool: 'subscription-tracker',
+          properties: {
+            source: 'demo'
+          }
+        })
       } else {
         toast.error(data.error || 'Something went wrong')
       }
@@ -201,11 +266,37 @@ export default function SubscriptionTrackerPage() {
   }
 
   const handleFileUpload = async (file: File) => {
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('File size must be less than 10MB')
+      return
+    }
+
+    // Validate file type
+    const validTypes = ['application/pdf', 'text/csv']
+    if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.pdf') && !file.name.toLowerCase().endsWith('.csv')) {
+      toast.error('Please upload a PDF or CSV file')
+      return
+    }
+
+    setIsUploading(true)
+    setUploadProgress(20)
     const toastId = toast.loading('Analyzing bank statement...')
+    
+    track({
+      event: ANALYTICS_EVENTS.FILE_UPLOAD_STARTED,
+      tool: 'subscription-tracker',
+      properties: {
+        fileType: file.type,
+        fileSize: file.size,
+        isDemo
+      }
+    })
     
     console.log('Uploading file:', file.name, 'Type:', file.type, 'Size:', file.size)
     
     try {
+      setUploadProgress(40)
       const formData = new FormData()
       formData.append('file', file)
       formData.append('type', 'bank_statement')
@@ -215,6 +306,7 @@ export default function SubscriptionTrackerPage() {
         method: 'POST',
         body: formData
       })
+      setUploadProgress(60)
       console.log('Response status:', response.status)
       
       if (!response.ok) {
@@ -225,8 +317,10 @@ export default function SubscriptionTrackerPage() {
       
       const result = await response.json()
       console.log('API Response:', result)
+      setUploadProgress(80)
       
       if (result.success) {
+        setUploadProgress(100)
         // Store all transactions for review
         if (result.data?.transactions) {
           console.log('Setting transactions:', result.data.transactions)
@@ -262,6 +356,16 @@ export default function SubscriptionTrackerPage() {
             `Analyzed ${result.data.summary.transactions_analyzed} transactions. Found ${result.data.subscriptions.length} possible subscriptions.`,
             { id: toastId, duration: 5000 }
           )
+          
+          track({
+            event: ANALYTICS_EVENTS.FILE_UPLOAD_SUCCESS,
+            tool: 'subscription-tracker',
+            properties: {
+              transactionsAnalyzed: result.data.summary.transactions_analyzed,
+              subscriptionsFound: result.data.subscriptions.length,
+              isDemo
+            }
+          })
         } else {
           // Even if no subscriptions found, show transactions for review
           setShowUploadModal(false)
@@ -277,6 +381,8 @@ export default function SubscriptionTrackerPage() {
       }
     } catch (error: any) {
       console.error('Upload error:', error)
+      setIsUploading(false)
+      setUploadProgress(0)
       // Check if it's the CSV not allowed error
       if (error?.message?.includes('Only PDF') || (file.name.toLowerCase().endsWith('.csv') && error?.message?.includes('allowed'))) {
         toast.error(
@@ -286,27 +392,57 @@ export default function SubscriptionTrackerPage() {
       } else {
         toast.error(error instanceof Error ? error.message : 'Failed to analyze bank statement', { id: toastId })
       }
+    } finally {
+      setTimeout(() => {
+        setIsUploading(false)
+        setUploadProgress(0)
+      }, 500)
     }
   }
+
+  // Show onboarding tooltip on first visit
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('subscription-tracker-visited')
+    if (!hasVisited && isDemo) {
+      setTimeout(() => {
+        setShowTooltip('onboarding')
+        localStorage.setItem('subscription-tracker-visited', 'true')
+        setTimeout(() => setShowTooltip(null), 5000)
+      }, 1000)
+      
+      // Track demo started
+      track({
+        event: ANALYTICS_EVENTS.DEMO_STARTED,
+        tool: 'subscription-tracker',
+        properties: {
+          subscriptionsShown: demoSubscriptions.length
+        }
+      })
+    }
+  }, [isDemo, track])
 
   return (
     <div className="container-wide py-8">
       {/* Demo Banner */}
       {isDemo && (
-        <div className="mb-8 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+        <div className="mb-8 p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-yellow-500" />
+              <div className="relative">
+                <Sparkles className="w-6 h-6 text-purple-400" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
+              </div>
               <div>
-                <p className="font-medium text-yellow-200">Demo Mode</p>
-                <p className="text-sm text-yellow-300/80">You're viewing sample data. Sign up to analyze your real bank statements securely.</p>
+                <p className="font-medium text-purple-200">Demo Mode - Try It Out!</p>
+                <p className="text-sm text-purple-300/80">Explore with sample AI subscription data. Upload your statement to see the magic.</p>
               </div>
             </div>
             <button
               onClick={() => setShowUpgradeModal(true)}
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm group"
             >
-              Join Waitlist
+              <Lock className="w-3 h-3 mr-1 group-hover:rotate-12 transition-transform" />
+              Get Full Access
             </button>
           </div>
         </div>
@@ -315,17 +451,41 @@ export default function SubscriptionTrackerPage() {
       {/* Page Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="h1 mb-2">Subscription Tracker</h1>
-          <p className="text-slate-400">Manage and optimize your recurring expenses</p>
+          <h1 className="h1 mb-2 flex items-center gap-3">
+            Subscription Tracker
+            {isFirstVisit && (
+              <span className="text-sm font-normal px-3 py-1 bg-green-500/20 text-green-400 rounded-full animate-pulse">
+                New!
+              </span>
+            )}
+          </h1>
+          <p className="text-slate-400">Discover hidden subscriptions and optimize your spending</p>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => isDemo ? setShowUpgradeModal(true) : setShowUploadModal(true)}
-            className="btn btn-secondary"
-          >
-            <Upload className="w-4 h-4 mr-2" />
-            Import Statement
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => isDemo ? setShowUpgradeModal(true) : setShowUploadModal(true)}
+              className="btn btn-secondary relative"
+              onMouseEnter={() => setShowTooltip('upload')}
+              onMouseLeave={() => setShowTooltip(null)}
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Import Statement
+            </button>
+            {showTooltip === 'upload' && (
+              <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-slate-800 text-sm text-slate-200 px-3 py-2 rounded-lg shadow-lg whitespace-nowrap z-10">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45" />
+                Upload PDF or CSV bank statements
+              </div>
+            )}
+            {showTooltip === 'onboarding' && (
+              <div className="absolute top-full mt-2 right-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl max-w-xs z-20 animate-bounce">
+                <div className="absolute -top-2 right-8 w-4 h-4 bg-purple-600 rotate-45" />
+                <p className="font-semibold mb-1">👋 Welcome to Subscription Tracker!</p>
+                <p className="text-xs opacity-90">Start by uploading a bank statement to discover all your hidden subscriptions.</p>
+              </div>
+            )}
+          </div>
           <button
             onClick={() => isDemo ? setShowUpgradeModal(true) : setShowAddModal(true)}
             className="btn btn-primary"
@@ -338,50 +498,60 @@ export default function SubscriptionTrackerPage() {
 
       {/* Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="metric-card">
+        <div className="metric-card group hover:scale-[1.02] transition-transform">
           <div className="flex items-center justify-between">
             <div>
-              <p className="metric-label">Monthly Spend</p>
-              <p className="metric-value">${totalMonthly.toFixed(2)}</p>
+              <p className="metric-label flex items-center gap-1">
+                Monthly Spend
+                <Info className="w-3 h-3 opacity-50" />
+              </p>
+              <p className="metric-value font-mono">${totalMonthly.toFixed(2)}</p>
+              <p className="text-xs text-slate-500 mt-1">All active subscriptions</p>
             </div>
-            <div className="p-3 rounded-lg bg-green-500/10 text-green-400">
+            <div className="p-3 rounded-lg bg-green-500/10 text-green-400 group-hover:bg-green-500/20 transition-colors">
               <DollarSign className="w-6 h-6" />
             </div>
           </div>
         </div>
         
-        <div className="metric-card">
+        <div className="metric-card group hover:scale-[1.02] transition-transform">
           <div className="flex items-center justify-between">
             <div>
               <p className="metric-label">Active Subscriptions</p>
-              <p className="metric-value">{activeCount}</p>
+              <p className="metric-value font-mono">{activeCount}</p>
+              <p className="text-xs text-slate-500 mt-1">{activeCount === 1 ? 'subscription' : 'subscriptions'} found</p>
             </div>
-            <div className="p-3 rounded-lg bg-blue-500/10 text-blue-400">
+            <div className="p-3 rounded-lg bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 transition-colors">
               <Calendar className="w-6 h-6" />
             </div>
           </div>
         </div>
         
-        <div className="metric-card">
+        <div className="metric-card group hover:scale-[1.02] transition-transform">
           <div className="flex items-center justify-between">
             <div>
               <p className="metric-label">Annual Projection</p>
-              <p className="metric-value">${annualProjection.toFixed(2)}</p>
+              <p className="metric-value font-mono">${annualProjection.toFixed(2)}</p>
+              <p className="text-xs text-slate-500 mt-1">Based on monthly costs</p>
             </div>
-            <div className="p-3 rounded-lg bg-purple-500/10 text-purple-400">
+            <div className="p-3 rounded-lg bg-purple-500/10 text-purple-400 group-hover:bg-purple-500/20 transition-colors">
               <TrendingUp className="w-6 h-6" />
             </div>
           </div>
         </div>
         
-        <div className="metric-card">
+        <div className="metric-card group hover:scale-[1.02] transition-transform relative overflow-hidden">
+          <div className="absolute -top-1 -right-8 px-3 py-1 bg-red-500 text-white text-xs font-bold transform rotate-45">
+            BETA
+          </div>
           <div className="flex items-center justify-between">
             <div>
               <p className="metric-label">Potential Savings</p>
-              <p className="metric-value">$0.00</p>
+              <p className="metric-value font-mono text-amber-400">$480.00</p>
+              <p className="text-xs text-slate-500 mt-1">Pick 1 AI assistant</p>
             </div>
-            <div className="p-3 rounded-lg bg-amber-500/10 text-amber-400">
-              <AlertCircle className="w-6 h-6" />
+            <div className="p-3 rounded-lg bg-amber-500/10 text-amber-400 group-hover:bg-amber-500/20 transition-colors">
+              <AlertCircle className="w-6 h-6 animate-pulse" />
             </div>
           </div>
         </div>
@@ -390,7 +560,10 @@ export default function SubscriptionTrackerPage() {
       {/* Tab Navigation */}
       <div className="mb-6 flex gap-4 border-b border-slate-800">
         <button
-          onClick={() => setActiveTab('tracker')}
+          onClick={() => {
+            setActiveTab('tracker')
+            track({ event: ANALYTICS_EVENTS.TAB_SWITCHED, tool: 'subscription-tracker', properties: { tab: 'tracker' } })
+          }}
           className={`pb-3 px-1 font-medium transition-colors ${
             activeTab === 'tracker'
               ? 'text-purple-400 border-b-2 border-purple-400'
@@ -459,32 +632,59 @@ export default function SubscriptionTrackerPage() {
             </div>
           ) : (
             <div className="divide-y divide-slate-800">
-              {subscriptions.map((sub) => (
-                <div key={sub.id} className="p-6 hover:bg-slate-900/40 transition">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-lg ${getCategoryColor(sub.category)} flex items-center justify-center text-white font-bold`}>
-                        {sub.name.charAt(0).toUpperCase()}
+              {subscriptions.map((sub, index) => {
+                const daysUntilBilling = Math.ceil((new Date(sub.nextBillingDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+                const isUpcoming = daysUntilBilling <= 7 && daysUntilBilling >= 0
+                
+                return (
+                  <div 
+                    key={sub.id} 
+                    className="p-6 hover:bg-slate-900/40 transition group relative"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    {isUpcoming && (
+                      <div className="absolute top-6 right-6 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs rounded-full">
+                        Bills in {daysUntilBilling} {daysUntilBilling === 1 ? 'day' : 'days'}
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-slate-50">{sub.name}</h3>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 rounded-lg ${getCategoryColor(sub.category)} flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform`}>
+                          {sub.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-slate-50">{sub.name}</h3>
+                          <p className="text-sm text-slate-400">
+                            {sub.provider} • {sub.billingCycle}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold text-slate-50 font-mono">
+                          ${sub.amount.toFixed(2)}
+                          <span className="text-sm text-slate-400 font-sans">/{sub.billingCycle === 'annual' ? 'year' : 'mo'}</span>
+                        </p>
                         <p className="text-sm text-slate-400">
-                          {sub.provider} • {sub.billingCycle}
+                          Next: {new Date(sub.nextBillingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-slate-50">
-                        ${sub.amount.toFixed(2)}
-                        <span className="text-sm text-slate-400">/{sub.billingCycle}</span>
-                      </p>
-                      <p className="text-sm text-slate-400">
-                        Next bill: {new Date(sub.nextBillingDate).toLocaleDateString()}
-                      </p>
+                    
+                    {/* Quick actions on hover */}
+                    <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                      <button 
+                        className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+                        onClick={() => {
+                          setSubscriptions(subscriptions.filter(s => s.id !== sub.id))
+                          toast.success(`Removed ${sub.name}`)
+                        }}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
@@ -621,10 +821,17 @@ export default function SubscriptionTrackerPage() {
           
           {possibleSubscriptions.length > 0 && (
             <div className="p-6 border-b border-slate-800 bg-purple-500/5">
-              <h3 className="font-semibold text-purple-400 mb-4">Detected Subscriptions</h3>
+              <h3 className="font-semibold text-purple-400 mb-4 flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                AI-Detected Subscriptions
+              </h3>
               <div className="space-y-3">
                 {possibleSubscriptions.map((sub, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg">
+                  <div 
+                    key={idx} 
+                    className="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg animate-fade-in-up"
+                    style={{ animationDelay: `${idx * 100}ms` }}
+                  >
                     <div>
                       <p className="font-medium text-slate-50">{sub.name}</p>
                       <p className="text-sm text-slate-400">
@@ -757,24 +964,60 @@ export default function SubscriptionTrackerPage() {
                 Upload your bank statement (PDF or CSV) and we'll automatically detect subscriptions and show all transactions for review.
               </p>
               
-              <div className="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center">
-                <Upload className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-                <p className="text-slate-300 mb-2">Drag and drop your PDF or CSV here</p>
-                <p className="text-sm text-slate-500 mb-4">or</p>
-                <label className="btn btn-primary cursor-pointer">
-                  <input
-                    type="file"
-                    accept=".pdf,.csv"
-                    className="hidden"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0]
-                      if (file) {
-                        await handleFileUpload(file)
-                      }
-                    }}
-                  />
-                  Browse Files
-                </label>
+              <div 
+                className="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center relative"
+                onDragOver={(e) => {
+                  e.preventDefault()
+                  e.currentTarget.classList.add('border-purple-500', 'bg-purple-500/5')
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault()
+                  e.currentTarget.classList.remove('border-purple-500', 'bg-purple-500/5')
+                }}
+                onDrop={async (e) => {
+                  e.preventDefault()
+                  e.currentTarget.classList.remove('border-purple-500', 'bg-purple-500/5')
+                  const file = e.dataTransfer.files?.[0]
+                  if (file) {
+                    await handleFileUpload(file)
+                  }
+                }}
+              >
+                {isUploading ? (
+                  <div className="space-y-4">
+                    <div className="w-16 h-16 relative mx-auto">
+                      <div className="absolute inset-0 border-4 border-slate-700 rounded-full"></div>
+                      <div 
+                        className="absolute inset-0 border-4 border-purple-500 rounded-full transition-all duration-300"
+                        style={{
+                          clipPath: `polygon(50% 50%, 50% 0%, ${uploadProgress > 25 ? '100% 0%' : `${50 + uploadProgress * 2}% 0%`}, ${uploadProgress > 25 ? (uploadProgress > 50 ? '100% 100%' : `100% ${(uploadProgress - 25) * 4}%`) : '50% 50%'}, ${uploadProgress > 50 ? (uploadProgress > 75 ? '0% 100%' : `${100 - (uploadProgress - 50) * 4}% 100%`) : '50% 50%'}, ${uploadProgress > 75 ? `0% ${100 - (uploadProgress - 75) * 4}%` : '50% 50%'}, 50% 50%)`
+                        }}
+                      ></div>
+                    </div>
+                    <p className="text-slate-300">Processing your bank statement...</p>
+                    <p className="text-sm text-slate-500">{uploadProgress}%</p>
+                  </div>
+                ) : (
+                  <>
+                    <Upload className="w-12 h-12 text-slate-500 mx-auto mb-4" />
+                    <p className="text-slate-300 mb-2">Drag and drop your PDF or CSV here</p>
+                    <p className="text-sm text-slate-500 mb-4">or</p>
+                    <label className="btn btn-primary cursor-pointer">
+                      <input
+                        type="file"
+                        accept=".pdf,.csv"
+                        className="hidden"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            await handleFileUpload(file)
+                          }
+                        }}
+                      />
+                      Browse Files
+                    </label>
+                  </>
+                )}
               </div>
               
               <div className="mt-6 space-y-2">
