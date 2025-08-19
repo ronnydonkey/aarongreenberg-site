@@ -4,11 +4,14 @@ import { createClient } from '@supabase/supabase-js'
 // NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 // NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
 // Create a single supabase client for interacting with your database
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Only create client if we have the required environment variables
+export const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
 
 // Types for our waitlist table
 export interface WaitlistEntry {
@@ -23,6 +26,12 @@ export interface WaitlistEntry {
 
 // Helper function to add to waitlist
 export async function addToWaitlist(entry: WaitlistEntry) {
+  if (!supabase) {
+    console.log('Supabase not configured, logging waitlist entry:', entry)
+    // Return a mock response when Supabase is not configured
+    return { ...entry, id: Date.now(), created_at: new Date().toISOString() }
+  }
+
   const { data, error } = await supabase
     .from('waitlist')
     .insert([entry])
