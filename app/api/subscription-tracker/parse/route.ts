@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     console.log('Forwarding to Railway API with fields:', Array.from(formData.keys()))
     
     // Forward the request to the Railway API
-    const response = await fetch('https://subscription-tracker-parser-production.up.railway.app/parse', {
+    const response = await fetch('https://pdf-to-csv-parser-production.up.railway.app/parse', {
       method: 'POST',
       body: formData,
     })
