@@ -1,4 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { addToWaitlist } from '@/lib/supabase'
+
+// Optional: For email notifications
+async function sendNotificationEmail(email: string, tool: string) {
+  if (!process.env.RESEND_API_KEY || !process.env.NOTIFICATION_EMAIL) {
+    return // Skip if not configured
+  }
+  
+  try {
+    // Using Resend (install with: npm install resend)
+    const { Resend } = await import('resend')
+    const resend = new Resend(process.env.RESEND_API_KEY)
+    
+    await resend.emails.send({
+      from: 'Waitlist <noreply@aarongreenberg.net>',
+      to: process.env.NOTIFICATION_EMAIL,
+      subject: `New waitlist signup: ${tool}`,
+      html: `
+        <h2>New Waitlist Signup</h2>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Tool:</strong> ${tool}</p>
+        <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+      `
+    })
+  } catch (error) {
+    console.error('Failed to send notification:', error)
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,22 +50,46 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // For MVP, we'll log to console and could easily add:
-    // - Supabase insert
-    // - Airtable API
-    // - Google Sheets append
-    // - Email to you via Resend/SendGrid
+    // Get additional context
+    const ip_address = request.headers.get('x-forwarded-for') || 
+                      request.headers.get('x-real-ip') || 
+                      'unknown'
+    const user_agent = request.headers.get('user-agent') || 'unknown'
     
-    console.log('Waitlist signup:', {
-      email,
-      tool,
-      source: source || 'direct',
-      timestamp: new Date().toISOString(),
-      ip: request.headers.get('x-forwarded-for') || 'unknown'
-    })
-    
-    // TODO: Add your preferred storage method here
-    // Example: await supabase.from('waitlist').insert({ email, tool, source })
+    try {
+      // Save to Supabase
+      await addToWaitlist({
+        email,
+        tool,
+        source: source || 'direct',
+        ip_address,
+        user_agent
+      })
+      
+      // Send notification email (non-blocking)
+      sendNotificationEmail(email, tool)
+      
+    } catch (dbError: any) {
+      // If Supabase fails, still log it
+      console.error('Database error:', dbError)
+      
+      // Check if it's a duplicate entry
+      if (dbError?.code === '23505') {
+        return NextResponse.json({
+          success: true,
+          message: 'You\'re already on the waitlist!'
+        })
+      }
+      
+      // For other DB errors, continue anyway (don't lose the lead)
+      console.log('Fallback - Waitlist signup:', {
+        email,
+        tool,
+        source: source || 'direct',
+        timestamp: new Date().toISOString(),
+        ip: ip_address
+      })
+    }
     
     return NextResponse.json({
       success: true,
