@@ -131,6 +131,8 @@ export default function SubscriptionTrackerPage() {
   const [activeTab, setActiveTab] = useState<'tracker' | 'analytics' | 'review'>('tracker')
   const [importedTransactions, setImportedTransactions] = useState<any[]>(demoTransactions)
   const [possibleSubscriptions, setPossibleSubscriptions] = useState<any[]>([])
+  const [waitlistEmail, setWaitlistEmail] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Calculate metrics
   const totalMonthly = subscriptions
@@ -164,6 +166,37 @@ export default function SubscriptionTrackerPage() {
     setSubscriptions([...subscriptions, newSub])
     setShowAddModal(false)
     toast.success('Subscription added successfully')
+  }
+
+  const handleWaitlistSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: waitlistEmail,
+          tool: 'subscription-tracker',
+          source: 'demo'
+        })
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok) {
+        toast.success('You\'re on the list! We\'ll notify you when the secure version launches.')
+        setShowUpgradeModal(false)
+        setWaitlistEmail('')
+      } else {
+        toast.error(data.error || 'Something went wrong')
+      }
+    } catch (error) {
+      toast.error('Failed to join waitlist. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleFileUpload = async (file: File) => {
@@ -272,7 +305,7 @@ export default function SubscriptionTrackerPage() {
               onClick={() => setShowUpgradeModal(true)}
               className="btn btn-primary btn-sm"
             >
-              Sign Up for Full Version
+              Join Waitlist
             </button>
           </div>
         </div>
@@ -874,9 +907,12 @@ export default function SubscriptionTrackerPage() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="card-surface max-w-md w-full">
             <div className="p-6 border-b border-slate-800 flex items-center justify-between">
-              <h2 className="h3">Upgrade to Full Version</h2>
+              <h2 className="h3">Join the Waitlist</h2>
               <button
-                onClick={() => setShowUpgradeModal(false)}
+                onClick={() => {
+                  setShowUpgradeModal(false)
+                  setWaitlistEmail('')
+                }}
                 className="text-slate-400 hover:text-slate-200"
               >
                 <X className="h-5 w-5" />
@@ -888,9 +924,9 @@ export default function SubscriptionTrackerPage() {
                 <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="w-8 h-8 text-green-500" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Secure Your Financial Data</h3>
+                <h3 className="text-xl font-semibold mb-2">Get Early Access</h3>
                 <p className="text-slate-400">
-                  Get full access with bank-level security and data encryption
+                  Be first to know when the secure version launches
                 </p>
               </div>
 
@@ -898,44 +934,57 @@ export default function SubscriptionTrackerPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
-                    <p className="font-medium">Bank-Level Encryption</p>
-                    <p className="text-sm text-slate-400">Your data is encrypted at rest and in transit</p>
+                    <p className="font-medium">Bank-Level Security</p>
+                    <p className="text-sm text-slate-400">Your financial data encrypted and private</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
-                    <p className="font-medium">Private & Secure</p>
-                    <p className="text-sm text-slate-400">Only you can access your financial data</p>
+                    <p className="font-medium">Early Bird Pricing</p>
+                    <p className="text-sm text-slate-400">50% off for waitlist members</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
                   <div>
-                    <p className="font-medium">Full Features</p>
-                    <p className="text-sm text-slate-400">Import unlimited statements, export reports, and more</p>
+                    <p className="font-medium">7-Day Free Trial</p>
+                    <p className="text-sm text-slate-400">Cancel anytime, no questions asked</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-slate-800/50 rounded-lg p-4 mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-lg font-medium">Full Access</span>
-                  <span className="text-2xl font-bold text-primary">Free</span>
-                </div>
-                <p className="text-sm text-slate-400">During beta - no credit card required</p>
-              </div>
-
-              <a
-                href="https://app.subscriptiontracker.ai/signup"
-                className="btn btn-primary w-full mb-3"
-              >
-                <Lock className="w-4 h-4 mr-2" />
-                Create Secure Account
-              </a>
+              <form onSubmit={handleWaitlistSignup} className="space-y-4">
+                <input
+                  type="email"
+                  value={waitlistEmail}
+                  onChange={(e) => setWaitlistEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="input w-full"
+                  required
+                />
+                
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn btn-primary w-full"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                      Joining...
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4 mr-2" />
+                      Join Waitlist
+                    </>
+                  )}
+                </button>
+              </form>
               
-              <p className="text-xs text-center text-slate-500">
-                By signing up, you agree to our Terms of Service and Privacy Policy
+              <p className="text-xs text-center text-slate-500 mt-4">
+                No spam. We'll only email about Subscription Tracker updates.
               </p>
             </div>
           </div>

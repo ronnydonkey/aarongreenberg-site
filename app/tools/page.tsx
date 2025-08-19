@@ -230,16 +230,8 @@ export default function ToolsPage() {
                       <div className="text-3xl font-bold text-primary">{tool.pricing}</div>
                     </div>
 
-                    {tool.status === 'Coming Soon' || tool.status === 'In Development' ? (
-                      <button className="btn btn-secondary w-full mb-4" disabled>
-                        <Clock className="w-4 h-4 mr-2" />
-                        {tool.cta}
-                      </button>
-                    ) : tool.status === 'Personal Use' || tool.status === 'Private Beta' ? (
-                      <button className="btn btn-secondary w-full mb-4" disabled>
-                        {tool.cta}
-                      </button>
-                    ) : tool.internal ? (
+                    {/* Subscription Tracker has demo */}
+                    {tool.id === 'subscription-tracker' ? (
                       <Link
                         href={tool.url}
                         className="btn btn-primary w-full mb-4"
@@ -247,15 +239,17 @@ export default function ToolsPage() {
                         {tool.cta}
                       </Link>
                     ) : (
-                      <a
-                        href={tool.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-primary w-full mb-4"
+                      <button 
+                        onClick={() => {
+                          // For now, show coming soon message
+                          // Later: open waitlist modal for each tool
+                          window.location.href = `mailto:aaron@aarongreenberg.net?subject=Waitlist: ${tool.name}&body=I'd like early access to ${tool.name} when it launches.`
+                        }}
+                        className="btn btn-secondary w-full mb-4"
                       >
-                        {tool.cta}
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
+                        <Clock className="w-4 h-4 mr-2" />
+                        Join Waitlist
+                      </button>
                     )}
 
                     <div className="text-center">
