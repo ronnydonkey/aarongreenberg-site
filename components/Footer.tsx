@@ -14,6 +14,7 @@ const footerLinks = [
     links: [
       { label: 'Subscription Tracker', href: '/tools/subscription-tracker' },
       { label: 'All Tools', href: '/tools' },
+      { label: 'Pricing', href: '/pricing' },
       { label: 'Request a Tool', href: 'mailto:aaron@aarongreenberg.net' }
     ]
   },
