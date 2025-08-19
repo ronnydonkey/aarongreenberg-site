@@ -60,7 +60,9 @@ export default function SubscriptionTrackerPage() {
   ])
   const [showAddModal, setShowAddModal] = useState(false)
   const [showUploadModal, setShowUploadModal] = useState(false)
-  const [activeTab, setActiveTab] = useState<'tracker' | 'analytics'>('tracker')
+  const [activeTab, setActiveTab] = useState<'tracker' | 'analytics' | 'review'>('tracker')
+  const [importedTransactions, setImportedTransactions] = useState<any[]>([])
+  const [possibleSubscriptions, setPossibleSubscriptions] = useState<any[]>([])
 
   // Calculate metrics
   const totalMonthly = subscriptions
@@ -118,40 +120,51 @@ export default function SubscriptionTrackerPage() {
       const result = await response.json()
       console.log('API Response:', result)
       
-      if (result.success && result.data?.subscriptions?.length > 0) {
-        // Add new subscriptions (avoiding duplicates)
-        const existingNames = subscriptions.map(s => s.name.toLowerCase())
-        const newSubs = result.data.subscriptions.filter(
-          (sub: any) => !existingNames.includes(sub.name.toLowerCase())
-        ).map((sub: any) => ({
-          id: Date.now().toString() + Math.random(),
-          name: sub.name,
-          provider: sub.name,
-          category: sub.category || 'other',
-          amount: sub.amount,
-          billingCycle: sub.frequency === 'annual' ? 'annual' : 'monthly',
-          nextBillingDate: sub.date,
-          status: 'active'
-        }))
+      if (result.success) {
+        // Store all transactions for review
+        if (result.data?.transactions) {
+          setImportedTransactions(result.data.transactions)
+        }
         
-        setSubscriptions([...subscriptions, ...newSubs])
-        setShowUploadModal(false)
-        
-        toast.success(
-          `Found ${result.data.subscriptions.length} subscriptions! ${newSubs.length} new ones added.`,
-          { id: toastId }
-        )
-        
-        // Show summary
-        if (result.data.summary) {
+        if (result.data?.subscriptions?.length > 0) {
+          // Store possible subscriptions for review
+          setPossibleSubscriptions(result.data.subscriptions)
+          
+          // Add new subscriptions (avoiding duplicates)
+          const existingNames = subscriptions.map(s => s.name.toLowerCase())
+          const newSubs = result.data.subscriptions.filter(
+            (sub: any) => !existingNames.includes(sub.name.toLowerCase())
+          ).map((sub: any) => ({
+            id: Date.now().toString() + Math.random(),
+            name: sub.name,
+            provider: sub.name,
+            category: sub.category || 'other',
+            amount: sub.amount,
+            billingCycle: sub.frequency === 'annual' ? 'annual' : 'monthly',
+            nextBillingDate: sub.date,
+            status: 'active',
+            confidence: sub.confidence || 'medium'
+          }))
+          
+          setShowUploadModal(false)
+          setActiveTab('review')  // Switch to review tab
+          
           toast.success(
-            `Monthly total: $${result.data.summary.total_monthly.toFixed(2)}`,
-            { duration: 5000 }
+            `Analyzed ${result.data.summary.transactions_analyzed} transactions. Found ${result.data.subscriptions.length} possible subscriptions.`,
+            { id: toastId, duration: 5000 }
+          )
+        } else {
+          // Even if no subscriptions found, show transactions for review
+          setShowUploadModal(false)
+          setActiveTab('review')
+          toast.success(
+            `Analyzed ${result.data?.summary?.transactions_analyzed || 0} transactions. Review them to find subscriptions.`,
+            { id: toastId }
           )
         }
       } else {
-        console.log('No subscriptions found or success=false:', result)
-        toast.error('No subscriptions found in this statement', { id: toastId })
+        console.log('Failed to parse:', result)
+        toast.error('Failed to parse bank statement', { id: toastId })
       }
     } catch (error) {
       console.error('Upload error:', error)
@@ -259,6 +272,22 @@ export default function SubscriptionTrackerPage() {
           <BarChart3 className="h-4 w-4" />
           Analytics
         </button>
+        <button
+          onClick={() => setActiveTab('review')}
+          className={`pb-3 px-1 font-medium transition-colors flex items-center gap-2 ${
+            activeTab === 'review'
+              ? 'text-purple-400 border-b-2 border-purple-400'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <AlertCircle className="h-4 w-4" />
+          Review Transactions
+          {importedTransactions.length > 0 && (
+            <span className="ml-1 px-2 py-0.5 text-xs bg-purple-500/20 text-purple-400 rounded-full">
+              {importedTransactions.length}
+            </span>
+          )}
+        </button>
       </div>
 
       {/* Content */}
@@ -312,11 +341,140 @@ export default function SubscriptionTrackerPage() {
             </div>
           )}
         </div>
-      ) : (
+      ) : activeTab === 'analytics' ? (
         <div className="card-surface p-8 text-center">
           <BarChart3 className="w-16 h-16 text-slate-400 mx-auto mb-4" />
           <h3 className="h3 mb-2">Analytics Coming Soon</h3>
           <p className="text-slate-400">Detailed spending insights and trends will be available here</p>
+        </div>
+      ) : (
+        // Review Transactions Tab
+        <div className="card-surface">
+          <div className="p-6 border-b border-slate-800">
+            <h2 className="h2">Review Imported Transactions</h2>
+            <p className="text-sm text-slate-400 mt-2">
+              {importedTransactions.length > 0 
+                ? `${importedTransactions.length} transactions imported. Review to find additional subscriptions.`
+                : 'Import a bank statement to review transactions'}
+            </p>
+          </div>
+          
+          {possibleSubscriptions.length > 0 && (
+            <div className="p-6 border-b border-slate-800 bg-purple-500/5">
+              <h3 className="font-semibold text-purple-400 mb-4">Detected Subscriptions</h3>
+              <div className="space-y-3">
+                {possibleSubscriptions.map((sub, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-slate-50">{sub.name}</p>
+                      <p className="text-sm text-slate-400">
+                        ${sub.amount.toFixed(2)} {sub.frequency} • {sub.category}
+                        {sub.confidence && (
+                          <span className={`ml-2 text-xs px-2 py-0.5 rounded ${
+                            sub.confidence === 'high' ? 'bg-green-500/20 text-green-400' :
+                            sub.confidence === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                            'bg-orange-500/20 text-orange-400'
+                          }`}>
+                            {sub.confidence} confidence
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const newSub = {
+                          id: Date.now().toString(),
+                          name: sub.name,
+                          provider: sub.name,
+                          category: sub.category || 'other',
+                          amount: sub.amount,
+                          billingCycle: sub.frequency === 'annual' ? 'annual' : 'monthly',
+                          nextBillingDate: sub.date || new Date().toISOString().split('T')[0],
+                          status: 'active'
+                        }
+                        setSubscriptions([...subscriptions, newSub])
+                        setPossibleSubscriptions(possibleSubscriptions.filter((_, i) => i !== idx))
+                        toast.success(`Added ${sub.name} to subscriptions`)
+                      }}
+                      className="btn btn-primary btn-sm"
+                    >
+                      Add to Tracker
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {importedTransactions.length > 0 ? (
+            <div className="p-6">
+              <h3 className="font-semibold text-slate-50 mb-4">All Transactions</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="text-left text-sm text-slate-400 border-b border-slate-800">
+                      <th className="pb-3 pr-4">Date</th>
+                      <th className="pb-3 pr-4">Description</th>
+                      <th className="pb-3 pr-4 text-right">Amount</th>
+                      <th className="pb-3">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-sm">
+                    {importedTransactions.map((transaction, idx) => (
+                      <tr key={idx} className="border-b border-slate-900 hover:bg-slate-900/30">
+                        <td className="py-3 pr-4 text-slate-400">
+                          {transaction.date || 'N/A'}
+                        </td>
+                        <td className="py-3 pr-4 text-slate-200">
+                          {transaction.description || transaction.merchant || 'Unknown'}
+                        </td>
+                        <td className="py-3 pr-4 text-right text-slate-200">
+                          ${(transaction.amount || 0).toFixed(2)}
+                        </td>
+                        <td className="py-3">
+                          <button
+                            onClick={() => {
+                              const desc = (transaction.description || '').toLowerCase()
+                              const merchantName = desc.split(' ').slice(0, 2).map(
+                                (w: string) => w.charAt(0).toUpperCase() + w.slice(1)
+                              ).join(' ')
+                              
+                              const newSub = {
+                                id: Date.now().toString(),
+                                name: merchantName || 'Unknown',
+                                provider: merchantName || 'Unknown',
+                                category: 'other',
+                                amount: Math.abs(transaction.amount || 0),
+                                billingCycle: 'monthly',
+                                nextBillingDate: transaction.date || new Date().toISOString().split('T')[0],
+                                status: 'active'
+                              }
+                              setSubscriptions([...subscriptions, newSub])
+                              toast.success(`Added ${newSub.name} as subscription`)
+                            }}
+                            className="text-purple-400 hover:text-purple-300 text-sm"
+                          >
+                            Mark as Subscription
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <div className="p-12 text-center">
+              <Upload className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+              <p className="text-slate-400 mb-4">No transactions to review</p>
+              <button
+                onClick={() => setShowUploadModal(true)}
+                className="btn btn-primary"
+              >
+                Import Bank Statement
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -336,17 +494,17 @@ export default function SubscriptionTrackerPage() {
             
             <div className="p-6">
               <p className="text-slate-400 mb-6">
-                Upload your bank statement PDF and we'll automatically detect all your subscriptions.
+                Upload your bank statement (PDF or CSV) and we'll automatically detect subscriptions and show all transactions for review.
               </p>
               
               <div className="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center">
                 <Upload className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-                <p className="text-slate-300 mb-2">Drag and drop your PDF here</p>
+                <p className="text-slate-300 mb-2">Drag and drop your PDF or CSV here</p>
                 <p className="text-sm text-slate-500 mb-4">or</p>
                 <label className="btn btn-primary cursor-pointer">
                   <input
                     type="file"
-                    accept=".pdf"
+                    accept=".pdf,.csv"
                     className="hidden"
                     onChange={async (e) => {
                       const file = e.target.files?.[0]
@@ -363,8 +521,10 @@ export default function SubscriptionTrackerPage() {
                 <p className="text-sm text-slate-400">Supported formats:</p>
                 <ul className="text-sm text-slate-500 space-y-1">
                   <li>• PDF bank statements</li>
+                  <li>• CSV transaction exports</li>
                   <li>• Most major banks supported</li>
                   <li>• Automatic subscription detection</li>
+                  <li>• Manual review of all transactions</li>
                 </ul>
               </div>
             </div>
