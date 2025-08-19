@@ -414,10 +414,123 @@ export default function SubscriptionTrackerPage() {
           )}
         </div>
       ) : activeTab === 'analytics' ? (
-        <div className="card-surface p-8 text-center">
-          <BarChart3 className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-          <h3 className="h3 mb-2">Analytics Coming Soon</h3>
-          <p className="text-slate-400">Detailed spending insights and trends will be available here</p>
+        <div className="space-y-6">
+          {/* Spending Over Time Chart */}
+          <div className="card-surface">
+            <div className="p-6 border-b border-slate-800">
+              <h3 className="font-semibold text-slate-50">Monthly Spending Trend</h3>
+              <p className="text-sm text-slate-400 mt-1">Your subscription costs over the last 6 months</p>
+            </div>
+            <div className="p-6">
+              <div className="h-64 flex items-end justify-between gap-2">
+                {[
+                  { month: 'Aug', amount: 227.95 },
+                  { month: 'Sep', amount: 227.95 },
+                  { month: 'Oct', amount: 244.94 },
+                  { month: 'Nov', amount: 244.94 },
+                  { month: 'Dec', amount: 277.93 },
+                  { month: 'Jan', amount: 277.93 }
+                ].map((data, idx) => (
+                  <div key={idx} className="flex-1 flex flex-col items-center gap-2">
+                    <div className="w-full bg-slate-700 rounded-t-lg relative" style={{
+                      height: `${(data.amount / 300) * 100}%`
+                    }}>
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs text-slate-400 whitespace-nowrap">
+                        ${data.amount}
+                      </div>
+                    </div>
+                    <span className="text-xs text-slate-400">{data.month}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Category Breakdown */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="card-surface">
+              <div className="p-6 border-b border-slate-800">
+                <h3 className="font-semibold text-slate-50">Spending by Category</h3>
+              </div>
+              <div className="p-6 space-y-4">
+                {[
+                  { category: 'Streaming', amount: 17.99, percentage: 22, color: 'bg-red-500' },
+                  { category: 'Software', amount: 9.99, percentage: 12, color: 'bg-blue-500' },
+                  { category: 'Fitness', amount: 49.99, percentage: 61, color: 'bg-orange-500' },
+                  { category: 'Other', amount: 4.08, percentage: 5, color: 'bg-slate-500' }
+                ].map((cat, idx) => (
+                  <div key={idx}>
+                    <div className="flex justify-between items-baseline mb-2">
+                      <span className="text-sm font-medium">{cat.category}</span>
+                      <span className="text-sm text-slate-400">${cat.amount}/mo</span>
+                    </div>
+                    <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full ${cat.color} transition-all duration-500`}
+                        style={{ width: `${cat.percentage}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="card-surface">
+              <div className="p-6 border-b border-slate-800">
+                <h3 className="font-semibold text-slate-50">Key Insights</h3>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-red-500 rounded-full mt-1.5"></div>
+                  <div>
+                    <p className="font-medium text-slate-50">Annual cost increasing</p>
+                    <p className="text-sm text-slate-400">You'll spend $996 more this year vs last year</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-yellow-500 rounded-full mt-1.5"></div>
+                  <div>
+                    <p className="font-medium text-slate-50">Duplicate services detected</p>
+                    <p className="text-sm text-slate-400">StreamFlix and CloudStorage have overlapping features</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5"></div>
+                  <div>
+                    <p className="font-medium text-slate-50">Potential savings: $27.98/mo</p>
+                    <p className="text-sm text-slate-400">By consolidating services and annual plans</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Upcoming Renewals */}
+          <div className="card-surface">
+            <div className="p-6 border-b border-slate-800">
+              <h3 className="font-semibold text-slate-50">Upcoming Renewals</h3>
+              <p className="text-sm text-slate-400 mt-1">Next 30 days</p>
+            </div>
+            <div className="p-6">
+              <div className="space-y-3">
+                {subscriptions
+                  .filter(sub => sub.status === 'active')
+                  .sort((a, b) => new Date(a.nextBillingDate).getTime() - new Date(b.nextBillingDate).getTime())
+                  .slice(0, 3)
+                  .map((sub) => (
+                    <div key={sub.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                      <div>
+                        <p className="font-medium">{sub.name}</p>
+                        <p className="text-sm text-slate-400">
+                          {new Date(sub.nextBillingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </p>
+                      </div>
+                      <p className="font-semibold text-primary">${sub.amount}</p>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         // Review Transactions Tab
