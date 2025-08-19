@@ -1,4 +1,10 @@
-// Force rebuild
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Terms of Service - Aaron Greenberg',
+  description: 'Terms of Service for Aaron Greenberg tools and services',
+}
+
 export default function TermsPage() {
   return (
     <div className="container-narrow py-20">

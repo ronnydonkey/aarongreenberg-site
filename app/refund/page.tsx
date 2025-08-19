@@ -1,3 +1,10 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Refund Policy - Aaron Greenberg',
+  description: 'Refund Policy for Aaron Greenberg tools and services',
+}
+
 export default function RefundPage() {
   return (
     <div className="container-narrow py-20">

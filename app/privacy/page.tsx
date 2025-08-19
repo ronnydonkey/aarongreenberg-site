@@ -1,3 +1,10 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy - Aaron Greenberg',
+  description: 'Privacy Policy for Aaron Greenberg tools and services',
+}
+
 export default function PrivacyPage() {
   return (
     <div className="container-narrow py-20">
