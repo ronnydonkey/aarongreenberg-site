@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Force rebuild - 2025-08-18 20:30
+const RAILWAY_API = 'https://pdf-to-csv-parser-production.up.railway.app/parse'
+
 export async function POST(request: NextRequest) {
+  console.log('Proxy endpoint called at:', new Date().toISOString())
+  console.log('Forwarding to:', RAILWAY_API)
+  
   try {
     // Get the form data from the request
     const incomingFormData = await request.formData()
@@ -13,12 +19,11 @@ export async function POST(request: NextRequest) {
       formData.append(key, value)
     }
     
-    
     // Log what we're sending
     console.log('Forwarding to Railway API with fields:', Array.from(formData.keys()))
     
     // Forward the request to the Railway API
-    const response = await fetch('https://pdf-to-csv-parser-production.up.railway.app/parse', {
+    const response = await fetch(RAILWAY_API, {
       method: 'POST',
       body: formData,
     })

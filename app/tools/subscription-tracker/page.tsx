@@ -101,15 +101,19 @@ export default function SubscriptionTrackerPage() {
   const handleFileUpload = async (file: File) => {
     const toastId = toast.loading('Analyzing bank statement...')
     
+    console.log('Uploading file:', file.name, 'Type:', file.type, 'Size:', file.size)
+    
     try {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('type', 'bank_statement')
       
+      console.log('Calling API endpoint: /api/subscription-tracker/parse')
       const response = await fetch('/api/subscription-tracker/parse', {
         method: 'POST',
         body: formData
       })
+      console.log('Response status:', response.status)
       
       if (!response.ok) {
         const error = await response.json()
