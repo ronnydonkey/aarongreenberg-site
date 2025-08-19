@@ -9,17 +9,17 @@ import { Analytics } from '@vercel/analytics/react'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Aaron Greenberg - I Build Tools That Create Time',
-  description: 'Time to think. Time to grow. Time to live. Building AI-powered tools that eliminate friction, clarify chaos, and help teams run faster without burning out.',
-  keywords: 'Aaron Greenberg, AI tools, productivity, automation, ScatterbrainAI, time management, business tools',
+  title: 'Aaron Greenberg - I solve problems',
+  description: 'Each tool starts with a real person, a real problem, and a late-night text. Follow along as I build solutions that actually work.',
+  keywords: 'Aaron Greenberg, AI tools, productivity, automation, problem solving, software development, business tools',
   authors: [{ name: 'Aaron Greenberg' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://aarongreenberg.net',
     siteName: 'Aaron Greenberg',
-    title: 'Aaron Greenberg - I Build Tools That Create Time',
-    description: 'Time to think. Time to grow. Time to live. Building AI-powered tools that eliminate friction and help teams run faster.',
+    title: 'Aaron Greenberg - I solve problems',
+    description: 'Each tool starts with a real person, a real problem, and a late-night text. Follow along as I build solutions that actually work.',
     images: [
       {
         url: 'https://aarongreenberg.net/og-image.png',

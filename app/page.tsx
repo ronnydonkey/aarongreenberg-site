@@ -101,8 +101,9 @@ export default function HomePage() {
           <div className="mb-12">
             <h2 className="h2 mb-4">What I'm Building</h2>
             <p className="text-xl text-secondary">
-              Currently shipping ScatterbrainAI and a suite of tools that solve the problems that waste your time. 
-              Building in public every morning from 9am-noon. You can watch me figure things out in real-time.
+              Tools that solve real problems for real people. Follow along as I build solutions for 
+              the auto broker who's drowning in inventory, the investor with a specific strategy, 
+              and anyone else who texts me at midnight with "Can you build..."
             </p>
           </div>
           <ToolShowcase featured />
@@ -163,9 +164,10 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
             <div>
               <div className="mb-8">
-                <h2 className="h2 mb-4">Building in Public</h2>
+                <h2 className="h2 mb-4">The Build Journal</h2>
                 <p className="text-secondary">
-                  Raw updates from my coding sessions. The wins, the bugs, and everything in between.
+                  Stories from the trenches. What worked, what broke, what I learned. 
+                  Posted whenever something interesting happens.
                 </p>
               </div>
               <BuildFeed limit={5} />
@@ -203,9 +205,9 @@ export default function HomePage() {
 
               {/* Newsletter */}
               <div className="card-surface bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
-                <h3 className="h4 mb-4">Get Updates</h3>
+                <h3 className="h4 mb-4">Follow the Journey</h3>
                 <p className="text-sm text-secondary mb-4">
-                  Weekly insights on building AI tools and growing a SaaS business.
+                  Get notified when I ship something new or learn something worth sharing.
                 </p>
                 <form className="space-y-3">
                   <input

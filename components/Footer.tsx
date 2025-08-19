@@ -12,10 +12,9 @@ const footerLinks = [
   {
     title: 'Tools',
     links: [
-      { label: 'CRE Lead Research', href: 'https://scatterbrainai.com/cre-tool' },
-      { label: 'AutoBroker Pro', href: 'https://scatterbrainai.com/auto-broker' },
-      { label: 'Subscription Tracker', href: 'https://scatterbrainai.com/subscription-tracker' },
-      { label: 'All Tools', href: '/tools' }
+      { label: 'Subscription Tracker', href: '/tools/subscription-tracker' },
+      { label: 'All Tools', href: '/tools' },
+      { label: 'Request a Tool', href: 'mailto:aaron@aarongreenberg.net' }
     ]
   },
   {

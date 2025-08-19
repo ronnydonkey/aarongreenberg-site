@@ -29,7 +29,7 @@ export default function AboutPage() {
             </p>
             <p className="text-lg text-secondary mb-8">
               I studied film and rhetoric at UC Berkeley. Spent two decades managing chaos in production. 
-              Now I build tools at ScatterbrainAI that eliminate friction and help teams run faster.
+              Now I build tools that solve real problems for real people.
             </p>
             <div className="space-y-2 text-lg text-secondary mb-8">
               <p>• AI serves people—not replaces them</p>

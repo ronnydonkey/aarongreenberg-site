@@ -2,11 +2,9 @@ import Link from 'next/link'
 import { 
   Building2, 
   Car, 
-  CreditCard, 
-  FileText,
+  CreditCard,
   ExternalLink,
-  Users,
-  TrendingUp,
+  MessageSquare,
   Clock,
   CheckCircle,
   ShoppingCart
@@ -14,120 +12,126 @@ import {
 
 const tools = [
   {
-    id: 'arbitrage-scanner',
-    name: 'Arbitrage Scanner',
-    description: 'Find profitable resale opportunities across online marketplaces. AI analyzes pricing, calculates ROI, and automates purchasing with approval workflows.',
-    icon: ShoppingCart,
-    color: 'from-cyan-500 to-blue-500',
-    status: 'Live',
-    statusColor: 'badge-success',
-    metrics: {
-      users: '43',
-      saved: '$487K',
-      roi: '37.7%'
-    },
-    features: [
-      'Multi-platform scanning (eBay, FB, etc.)',
-      'Automated ROI calculations',
-      'Manual approval workflow',
-      'Credit card management',
-      'Inventory tracking'
-    ],
-    pricing: '$79/month',
-    url: 'https://scatterbrainai.com/arbitrage',
-    cta: 'Start Arbitrage'
-  },
-  {
-    id: 'cre-research',
-    name: 'CRE Lead Research',
-    description: 'AI-powered commercial real estate opportunity finder. Monitors emails, scores deals, and sends alerts for properties matching your criteria.',
-    icon: Building2,
-    color: 'from-blue-500 to-indigo-500',
-    status: 'Live',
-    statusColor: 'badge-success',
-    metrics: {
-      users: '127',
-      saved: '$2.1M',
-      accuracy: '94%'
-    },
-    features: [
-      'Email monitoring for 50+ brokers',
-      'Automated lead scoring (0-100)',
-      'Custom investment criteria',
-      'Real-time alerts',
-      'Export to CSV/Excel'
-    ],
-    pricing: 'Enterprise',
-    url: 'https://scatterbrainai.com/cre-tool',
-    cta: 'Request Demo'
-  },
-  {
-    id: 'autobroker',
-    name: 'AutoBroker Pro',
-    description: 'Smart car shopping assistant that monitors inventory, tracks prices, and identifies the best deals based on your preferences.',
-    icon: Car,
-    color: 'from-green-500 to-emerald-500',
-    status: 'Beta',
-    statusColor: 'badge-primary',
-    metrics: {
-      users: '892',
-      saved: '$3.2M',
-      deals: '1,247'
-    },
-    features: [
-      'Real-time inventory tracking',
-      'Price drop alerts',
-      'Deal scoring algorithm',
-      'Market trend analysis',
-      'Negotiation insights'
-    ],
-    pricing: 'Enterprise',
-    url: 'https://scatterbrainai.com/auto-broker',
-    cta: 'Request Demo'
-  },
-  {
     id: 'subscription-tracker',
     name: 'Subscription Tracker',
-    description: 'Take control of recurring expenses. Upload bank statements and let AI identify, categorize, and optimize your subscriptions.',
+    story: 'I was bleeding money testing every new AI tool that launched. When I finally sat down to count, I had 47 active subscriptions. Built this in a weekend to stop the madness.',
+    description: 'Upload your bank statement. AI finds all your subscriptions, even the sneaky annual ones.',
     icon: CreditCard,
     color: 'from-purple-500 to-pink-500',
-    status: 'Beta',
-    statusColor: 'badge-primary',
+    status: 'Live',
+    statusColor: 'badge-success',
     metrics: {
-      users: '2,341',
+      subscriptionsFound: '12,847',
       saved: '$847K',
       accuracy: '96%'
     },
     features: [
-      'Bank statement import',
-      'AI subscription detection',
-      'Spending analytics',
-      'Cancellation reminders',
-      'Savings recommendations'
+      'Works with any bank PDF or CSV',
+      'Finds subscriptions you forgot about',
+      'Catches annual renewals before they hit',
+      'Shows spending trends',
+      'Export to spreadsheet'
     ],
-    pricing: '$9/month',
+    pricing: 'Free',
     url: '/tools/subscription-tracker',
-    cta: 'Track Subscriptions'
+    cta: 'Find My Subscriptions',
+    internal: true
   },
   {
-    id: 'knowledge-ripper',
-    name: 'Knowledge Ripper',
-    description: 'Extract structured data from any document. Perfect for contracts, reports, and research papers.',
-    icon: FileText,
+    id: 'cre-hacker',
+    name: 'CRE Investment Tool',
+    story: 'My lifelong friend invests in a very specific type of commercial property. He challenged me: "Build me the ultimate tool for my exact investment strategy." So I did.',
+    description: 'Custom-built for a specific CRE investment strategy. Monitors deals, scores opportunities, handles the entire workflow.',
+    icon: Building2,
+    color: 'from-blue-500 to-indigo-500',
+    status: 'Private Beta',
+    statusColor: 'badge-primary',
+    metrics: {
+      dealsAnalyzed: '3,847',
+      portfolioValue: '$47M',
+      accuracy: '94%'
+    },
+    features: [
+      'Built for one specific investment type',
+      'Monitors 50+ broker emails automatically',
+      'Scores deals based on proven criteria',
+      'Sends alerts only for 90+ scores',
+      'Complete investment workflow'
+    ],
+    pricing: 'Custom',
+    url: '#',
+    cta: 'By Invitation Only'
+  },
+  {
+    id: 'auto-broker',
+    name: 'Auto Broker Assistant',
+    story: 'A broker I\'ve bought cars from reached out: "I\'m drowning in inventory updates and missing deals for my clients." Built him a tool that watches everything so he doesn\'t have to.',
+    description: 'Monitors dealer inventory, tracks price changes, and alerts when the perfect car hits the market.',
+    icon: Car,
+    color: 'from-green-500 to-emerald-500',
+    status: 'In Development',
+    statusColor: 'badge-default',
+    metrics: {
+      inventoryTracked: '147K',
+      priceDropsCaught: '8,492',
+      perfectMatches: '2,847'
+    },
+    features: [
+      'Watches multiple dealer systems',
+      'Tracks price drops in real-time',
+      'Matches cars to client wishlists',
+      'Sends instant alerts',
+      'Negotiation leverage data'
+    ],
+    pricing: 'Custom',
+    url: '#',
+    cta: 'Coming Soon'
+  },
+  {
+    id: 'communications-hub',
+    name: 'Communications Hub',
+    story: 'I was drowning in notifications - email, Slack, Twitter, texts. Built my own command center that shows everything in one place. Now I never miss what matters.',
+    description: 'My personal command center. All communications in one dashboard - email, Slack, social feeds, everything.',
+    icon: MessageSquare,
+    color: 'from-indigo-500 to-purple-500',
+    status: 'Personal Use',
+    statusColor: 'badge-secondary',
+    metrics: {
+      messagesProcessed: '847K',
+      responseTime: '< 2min',
+      platforms: '12'
+    },
+    features: [
+      'Unified inbox for everything',
+      'Smart notification filtering',
+      'Priority message detection',
+      'Quick actions across platforms',
+      'Daily digest summaries'
+    ],
+    pricing: 'Not Available',
+    url: '#',
+    cta: 'My Personal Tool'
+  },
+  {
+    id: 'arbitrage-scanner',
+    name: 'Marketplace Arbitrage',
+    story: 'Started as a personal tool to find underpriced items online. Made $12K in the first month. Friends begged me to share it.',
+    description: 'Scans marketplaces for pricing inefficiencies. Buy low here, sell high there.',
+    icon: ShoppingCart,
     color: 'from-orange-500 to-red-500',
     status: 'Coming Soon',
     statusColor: 'badge-default',
     metrics: {
-      waitlist: '412',
-      accuracy: '98%',
-      speed: '10s avg'
+      opportunitiesFound: '28K',
+      avgROI: '37%',
+      totalProfit: '$487K'
     },
     features: [
-      'PDF, Word, Excel support',
-      'Custom extraction templates',
-      'Bulk processing',
-      'API access',
-      'Export to any format'
+      'Cross-platform price comparison',
+      'ROI calculations with fees',
+      'Automated purchase workflows',
+      'Inventory management',
+      'Profit tracking'
     ],
     pricing: 'TBD',
     url: '#',
@@ -139,55 +143,14 @@ export default function ToolsPage() {
   return (
     <div className="min-h-screen py-12">
       {/* Header */}
-      <div className="container-wide mb-12">
-        <h1 className="h1 mb-4">My Tools</h1>
-        <p className="text-xl text-secondary max-w-3xl">
-          AI-powered solutions for real problems. Each tool is built from personal need, 
-          tested in the real world, and designed to save you time and money.
-        </p>
-      </div>
-
-      {/* Bundle Offer */}
       <div className="container-wide mb-16">
-        <div className="card-surface bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <div className="badge badge-best mb-4">BEST VALUE</div>
-              <h2 className="h3 mb-3">Consumer Tools Bundle</h2>
-              <p className="text-secondary mb-4">
-                Get Arbitrage Scanner + Subscription Tracker + Knowledge Ripper for one low price. 
-                Save 40% compared to individual subscriptions.
-              </p>
-              <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-4xl font-bold text-primary">$79</span>
-                <span className="text-secondary">/month</span>
-                <span className="text-sm text-muted line-through">$127</span>
-              </div>
-              <Link href="https://scatterbrainai.com/pricing" className="btn btn-primary btn-lg">
-                Get All Access
-                <ExternalLink className="w-4 h-4 ml-2" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-1">3</div>
-                <div className="text-sm text-muted">Consumer Tools</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-500 mb-1">$48</div>
-                <div className="text-sm text-muted">Monthly Savings</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-1">24/7</div>
-                <div className="text-sm text-muted">Priority Support</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-1">∞</div>
-                <div className="text-sm text-muted">Future Tools</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h1 className="h1 mb-4">The Tools I'm Building</h1>
+        <p className="text-xl text-secondary max-w-3xl">
+          Each tool starts with a real person, a real problem, and a late-night text: "Can you build something that..."
+        </p>
+        <p className="text-lg text-muted mt-4 max-w-3xl">
+          Some are live. Some are in development. Some are private. All of them solve actual problems.
+        </p>
       </div>
 
       {/* Tools Grid */}
@@ -208,7 +171,10 @@ export default function ToolsPage() {
                           <h2 className="h3">{tool.name}</h2>
                           <span className={`badge ${tool.statusColor}`}>{tool.status}</span>
                         </div>
-                        <p className="text-secondary">{tool.description}</p>
+                        <p className="text-secondary mb-3">{tool.description}</p>
+                        {tool.story && (
+                          <p className="text-sm text-muted italic">{tool.story}</p>
+                        )}
                       </div>
                     </div>
 
@@ -225,40 +191,36 @@ export default function ToolsPage() {
                     </div>
 
                     <div className="flex flex-wrap gap-6">
-                      <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-muted" />
-                        <span className="text-sm">
-                          <span className="font-semibold text-primary">{tool.metrics.users}</span>
-                          <span className="text-muted"> active users</span>
-                        </span>
-                      </div>
-                      {tool.metrics.saved && (
-                        <div className="flex items-center gap-2">
-                          <TrendingUp className="w-4 h-4 text-muted" />
-                          <span className="text-sm">
-                            <span className="font-semibold text-green-500">{tool.metrics.saved}</span>
-                            <span className="text-muted"> saved</span>
-                          </span>
-                        </div>
-                      )}
-                      {tool.metrics.accuracy && (
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-muted" />
-                          <span className="text-sm">
-                            <span className="font-semibold text-primary">{tool.metrics.accuracy}</span>
-                            <span className="text-muted"> accuracy</span>
-                          </span>
-                        </div>
-                      )}
-                      {tool.metrics.roi && (
-                        <div className="flex items-center gap-2">
-                          <TrendingUp className="w-4 h-4 text-muted" />
-                          <span className="text-sm">
-                            <span className="font-semibold text-green-500">{tool.metrics.roi}</span>
-                            <span className="text-muted"> avg ROI</span>
-                          </span>
-                        </div>
-                      )}
+                      {Object.entries(tool.metrics).map(([key, value]) => {
+                        const metricLabels: Record<string, string> = {
+                          subscriptionsFound: 'subscriptions found',
+                          saved: 'saved',
+                          accuracy: 'accuracy',
+                          dealsAnalyzed: 'deals analyzed',
+                          portfolioValue: 'portfolio value',
+                          inventoryTracked: 'cars tracked',
+                          priceDropsCaught: 'price drops caught',
+                          perfectMatches: 'perfect matches',
+                          messagesProcessed: 'messages processed',
+                          responseTime: 'avg response',
+                          platforms: 'platforms',
+                          opportunitiesFound: 'opportunities found',
+                          avgROI: 'avg ROI',
+                          totalProfit: 'total profit'
+                        }
+                        
+                        const label = metricLabels[key] || key
+                        const isGreen = key.includes('saved') || key.includes('profit') || key.includes('ROI')
+                        
+                        return (
+                          <div key={key} className="flex items-center gap-2">
+                            <span className="text-sm">
+                              <span className={`font-semibold ${isGreen ? 'text-green-500' : 'text-primary'}`}>{value}</span>
+                              <span className="text-muted"> {label}</span>
+                            </span>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
 
@@ -268,11 +230,22 @@ export default function ToolsPage() {
                       <div className="text-3xl font-bold text-primary">{tool.pricing}</div>
                     </div>
 
-                    {tool.status === 'Coming Soon' ? (
+                    {tool.status === 'Coming Soon' || tool.status === 'In Development' ? (
                       <button className="btn btn-secondary w-full mb-4" disabled>
                         <Clock className="w-4 h-4 mr-2" />
-                        Coming Soon
+                        {tool.cta}
                       </button>
+                    ) : tool.status === 'Personal Use' || tool.status === 'Private Beta' ? (
+                      <button className="btn btn-secondary w-full mb-4" disabled>
+                        {tool.cta}
+                      </button>
+                    ) : tool.internal ? (
+                      <Link
+                        href={tool.url}
+                        className="btn btn-primary w-full mb-4"
+                      >
+                        {tool.cta}
+                      </Link>
                     ) : (
                       <a
                         href={tool.url}
@@ -286,8 +259,8 @@ export default function ToolsPage() {
                     )}
 
                     <div className="text-center">
-                      <Link href={`/blog/building-${tool.id}`} className="text-sm text-blue-500 hover:text-blue-400">
-                        Read how I built this →
+                      <Link href="/blog" className="text-sm text-blue-500 hover:text-blue-400">
+                        Follow the build story →
                       </Link>
                     </div>
                   </div>
@@ -301,13 +274,13 @@ export default function ToolsPage() {
       {/* Bottom CTA */}
       <div className="container-wide mt-16">
         <div className="card-surface text-center">
-          <h2 className="h3 mb-4">Have a Specific Problem?</h2>
+          <h2 className="h3 mb-4">Got a Problem That Needs Solving?</h2>
           <p className="text-secondary mb-6 max-w-2xl mx-auto">
-            I'm always looking for new problems to solve. If you have a specific need that my current tools don't address, 
-            let's talk about building a solution together.
+            The best tools come from real problems. If you're drowning in something repetitive, 
+            losing money to inefficiency, or just know there's a better way - let's talk.
           </p>
           <a href="mailto:aaron@aarongreenberg.net" className="btn btn-primary">
-            Discuss Your Idea
+            Tell Me Your Problem
           </a>
         </div>
       </div>
