@@ -32,53 +32,94 @@ interface Subscription {
 const demoSubscriptions: Subscription[] = [
   {
     id: 'demo-1',
-    name: 'StreamFlix Plus',
-    provider: 'StreamFlix',
-    category: 'streaming',
-    amount: 17.99,
+    name: 'Claude Pro',
+    provider: 'Anthropic',
+    category: 'software',
+    amount: 20.00,
     billingCycle: 'monthly',
     nextBillingDate: '2024-02-15',
     status: 'active'
   },
   {
     id: 'demo-2',
-    name: 'CloudStorage Pro',
-    provider: 'CloudStorage Inc',
+    name: 'ChatGPT Plus',
+    provider: 'OpenAI',
     category: 'software',
-    amount: 9.99,
+    amount: 20.00,
     billingCycle: 'monthly',
     nextBillingDate: '2024-02-20',
     status: 'active'
   },
   {
     id: 'demo-3',
-    name: 'NewsDigest Premium',
-    provider: 'NewsDigest',
-    category: 'other',
-    amount: 149.00,
-    billingCycle: 'annual',
-    nextBillingDate: '2024-08-01',
+    name: 'Perplexity Pro',
+    provider: 'Perplexity AI',
+    category: 'software',
+    amount: 20.00,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-08',
     status: 'active'
   },
   {
     id: 'demo-4',
-    name: 'FitnessPro Gym',
-    provider: 'FitnessPro',
-    category: 'fitness',
-    amount: 49.99,
+    name: 'Lovable.dev',
+    provider: 'Lovable',
+    category: 'software',
+    amount: 20.00,
     billingCycle: 'monthly',
-    nextBillingDate: '2024-02-05',
+    nextBillingDate: '2024-02-12',
+    status: 'active'
+  },
+  {
+    id: 'demo-5',
+    name: 'GitHub Copilot',
+    provider: 'GitHub',
+    category: 'software',
+    amount: 19.00,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-25',
+    status: 'active'
+  },
+  {
+    id: 'demo-6',
+    name: 'Midjourney',
+    provider: 'Midjourney Inc',
+    category: 'software',
+    amount: 30.00,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-10',
+    status: 'active'
+  },
+  {
+    id: 'demo-7',
+    name: 'Google One AI Premium',
+    provider: 'Google',
+    category: 'software',
+    amount: 19.99,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-18',
+    status: 'active'
+  },
+  {
+    id: 'demo-8',
+    name: 'Cursor Pro',
+    provider: 'Cursor',
+    category: 'software',
+    amount: 20.00,
+    billingCycle: 'monthly',
+    nextBillingDate: '2024-02-22',
     status: 'active'
   }
 ]
 
 const demoTransactions = [
-  { date: '2024-01-15', description: 'STREAMFLIX PLUS MONTHLY', amount: 17.99, merchant: 'StreamFlix' },
+  { date: '2024-01-20', description: 'CHATGPT PLUS OPENAI.COM', amount: 20.00, merchant: 'OpenAI' },
+  { date: '2024-01-15', description: 'CLAUDE PRO ANTHROPIC', amount: 20.00, merchant: 'Anthropic' },
   { date: '2024-01-14', description: 'GROCERY MART #4521', amount: 127.83, merchant: 'Grocery Mart' },
-  { date: '2024-01-12', description: 'CLOUDSTORAGE PRO SUBSCRIPTION', amount: 9.99, merchant: 'CloudStorage' },
-  { date: '2024-01-10', description: 'COFFEE HOUSE', amount: 5.47, merchant: 'Coffee House' },
-  { date: '2024-01-08', description: 'FITNESSPRO GYM MONTHLY', amount: 49.99, merchant: 'FitnessPro' },
-  { date: '2024-01-05', description: 'STREAMFLIX PLUS MONTHLY', amount: 17.99, merchant: 'StreamFlix' },
+  { date: '2024-01-12', description: 'LOVABLE.DEV SUBSCRIPTION', amount: 20.00, merchant: 'Lovable' },
+  { date: '2024-01-10', description: 'MIDJOURNEY SUBSCRIPTION', amount: 30.00, merchant: 'Midjourney' },
+  { date: '2024-01-08', description: 'PERPLEXITY PRO AI', amount: 20.00, merchant: 'Perplexity' },
+  { date: '2024-01-05', description: 'GITHUB COPILOT', amount: 19.00, merchant: 'GitHub' },
 ]
 
 export default function SubscriptionTrackerPage() {
@@ -424,12 +465,12 @@ export default function SubscriptionTrackerPage() {
             <div className="p-6">
               <div className="h-64 flex items-end justify-between gap-2">
                 {[
-                  { month: 'Aug', amount: 227.95 },
-                  { month: 'Sep', amount: 227.95 },
-                  { month: 'Oct', amount: 244.94 },
-                  { month: 'Nov', amount: 244.94 },
-                  { month: 'Dec', amount: 277.93 },
-                  { month: 'Jan', amount: 277.93 }
+                  { month: 'Aug', amount: 59.00 },
+                  { month: 'Sep', amount: 79.00 },
+                  { month: 'Oct', amount: 119.00 },
+                  { month: 'Nov', amount: 139.00 },
+                  { month: 'Dec', amount: 148.99 },
+                  { month: 'Jan', amount: 168.99 }
                 ].map((data, idx) => (
                   <div key={idx} className="flex-1 flex flex-col items-center gap-2">
                     <div className="w-full bg-slate-700 rounded-t-lg relative" style={{
@@ -454,10 +495,10 @@ export default function SubscriptionTrackerPage() {
               </div>
               <div className="p-6 space-y-4">
                 {[
-                  { category: 'Streaming', amount: 17.99, percentage: 22, color: 'bg-red-500' },
-                  { category: 'Software', amount: 9.99, percentage: 12, color: 'bg-blue-500' },
-                  { category: 'Fitness', amount: 49.99, percentage: 61, color: 'bg-orange-500' },
-                  { category: 'Other', amount: 4.08, percentage: 5, color: 'bg-slate-500' }
+                  { category: 'AI Assistants', amount: 80.00, percentage: 47, color: 'bg-blue-500' },
+                  { category: 'Dev Tools', amount: 39.00, percentage: 23, color: 'bg-green-500' },
+                  { category: 'Image Generation', amount: 30.00, percentage: 18, color: 'bg-purple-500' },
+                  { category: 'Research', amount: 19.99, percentage: 12, color: 'bg-orange-500' }
                 ].map((cat, idx) => (
                   <div key={idx}>
                     <div className="flex justify-between items-baseline mb-2">
@@ -483,22 +524,22 @@ export default function SubscriptionTrackerPage() {
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-red-500 rounded-full mt-1.5"></div>
                   <div>
-                    <p className="font-medium text-slate-50">Annual cost increasing</p>
-                    <p className="text-sm text-slate-400">You'll spend $996 more this year vs last year</p>
+                    <p className="font-medium text-slate-50">AI tool spend exploding</p>
+                    <p className="text-sm text-slate-400">Added 5 new AI subscriptions in last 3 months</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full mt-1.5"></div>
                   <div>
-                    <p className="font-medium text-slate-50">Duplicate services detected</p>
-                    <p className="text-sm text-slate-400">StreamFlix and CloudStorage have overlapping features</p>
+                    <p className="font-medium text-slate-50">Overlapping AI assistants</p>
+                    <p className="text-sm text-slate-400">Claude, ChatGPT, and Perplexity have similar features</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5"></div>
                   <div>
-                    <p className="font-medium text-slate-50">Potential savings: $27.98/mo</p>
-                    <p className="text-sm text-slate-400">By consolidating services and annual plans</p>
+                    <p className="font-medium text-slate-50">Potential savings: $40/mo</p>
+                    <p className="text-sm text-slate-400">Pick one primary AI assistant and cancel others</p>
                   </div>
                 </div>
               </div>
