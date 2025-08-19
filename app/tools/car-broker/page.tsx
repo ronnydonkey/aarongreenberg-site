@@ -199,20 +199,21 @@ export default function CarBrokerPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-black">
-      {/* Hero Section */}
+      {/* Hero Section with Hot Deals */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10" />
-        <div className="container-wide py-20 relative">
-          <div className="max-w-4xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="container-wide py-12 relative">
+          {/* Compact Hero */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Skip the Dealership Games
             </h1>
-            <p className="text-xl md:text-2xl text-secondary mb-8">
-              Pre-negotiated car deals delivered to your door. No haggling, no hidden fees, just transparent pricing.
+            <p className="text-lg md:text-xl text-secondary mb-6 max-w-2xl mx-auto">
+              Pre-negotiated car deals delivered to your door. No haggling, no hidden fees.
             </p>
             
             {/* Trust Indicators */}
-            <div className="flex flex-wrap gap-6 mb-8">
+            <div className="flex flex-wrap justify-center gap-6 mb-8">
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-green-600" />
                 <span className="text-sm font-medium">Licensed Broker</span>
@@ -226,94 +227,163 @@ export default function CarBrokerPage() {
                 <span className="text-sm font-medium">$500 Flat Fee</span>
               </div>
             </div>
+          </div>
 
-            <div className="flex gap-4">
-              <a href="tel:+13235551234" className="btn btn-primary">
-                <Phone className="w-4 h-4 mr-2" />
-                Call Gary Now
-              </a>
-              <button 
-                onClick={() => document.getElementById('deals')?.scrollIntoView({ behavior: 'smooth' })}
-                className="btn btn-secondary"
-              >
-                View Hot Deals
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </button>
+          {/* Hot Deals This Week - Above the Fold */}
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-center mb-2">
+              🔥 Hot Deals This Week
+            </h2>
+            <p className="text-center text-secondary mb-8">
+              Updated every Monday • All prices include broker fee
+            </p>
+
+            {/* Category Filter */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              {categories.map((category) => {
+                const Icon = category.icon
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-4 py-2 rounded-full font-medium transition-all text-sm ${
+                      selectedCategory === category.id
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                        : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4 inline mr-1" />
+                    {category.name}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Featured Deals Grid - Show top 3 */}
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {filteredDeals.slice(0, 3).map((deal) => (
+                <div key={deal.id} className="card-surface rounded-2xl overflow-hidden hover:shadow-2xl transition-all group">
+                  <div className="relative h-40 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Car className="w-20 h-20 text-slate-400" />
+                    </div>
+                    <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                      Save ${deal.savings.toLocaleString()}
+                    </div>
+                  </div>
+                  
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold mb-2">
+                      {deal.year} {deal.make} {deal.model}
+                    </h3>
+                    
+                    <div className="flex justify-between items-baseline mb-3">
+                      <span className="text-sm text-muted">Monthly</span>
+                      <span className="text-2xl font-bold text-primary">
+                        ${deal.monthlyPayment}
+                        <span className="text-sm font-normal text-muted">/mo</span>
+                      </span>
+                    </div>
+                    
+                    <div className="text-sm space-y-1 mb-4">
+                      <div className="flex justify-between">
+                        <span className="text-muted">Due at Signing</span>
+                        <span>${deal.dueAtSigning.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted">Term</span>
+                        <span>{deal.leaseTerm} months</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleInquiry(deal)}
+                      className="btn btn-primary w-full text-sm"
+                    >
+                      Reserve This Deal
+                    </button>
+
+                    {deal.inventory <= 3 && (
+                      <p className="text-xs text-center text-amber-600 mt-2">
+                        Only {deal.inventory} available
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Call to Action */}
+            <div className="text-center">
+              <div className="flex gap-4 justify-center mb-4">
+                <a href="tel:+13235551234" className="btn btn-primary">
+                  <Phone className="w-4 h-4 mr-2" />
+                  Call Gary Now
+                </a>
+                <button 
+                  onClick={() => document.getElementById('all-deals')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="btn btn-secondary"
+                >
+                  View All {filteredDeals.length} Deals
+                  <ChevronRight className="w-4 h-4 ml-2" />
+                </button>
+              </div>
+              <p className="text-sm text-muted">
+                Don&apos;t see your car? Call for custom deals on any make & model
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* How It Works */}
-      <div className="py-16 bg-slate-50 dark:bg-slate-900/50">
+      {/* How It Works - Simplified */}
+      <div className="py-12 bg-slate-50 dark:bg-slate-900/50">
         <div className="container-wide">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Car className="w-8 h-8 text-blue-600" />
+              <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Car className="w-7 h-7 text-blue-600" />
               </div>
-              <h3 className="font-semibold mb-2">1. Browse Deals</h3>
+              <h3 className="font-semibold mb-1">Browse Deals</h3>
               <p className="text-secondary text-sm">
-                Check our pre-negotiated deals updated weekly. All pricing is transparent.
+                Pre-negotiated prices updated weekly
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Phone className="w-8 h-8 text-purple-600" />
+              <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Phone className="w-7 h-7 text-purple-600" />
               </div>
-              <h3 className="font-semibold mb-2">2. Contact Gary</h3>
+              <h3 className="font-semibold mb-1">Contact Gary</h3>
               <p className="text-secondary text-sm">
-                Call or text. Gary handles all negotiations and paperwork for you.
+                He handles all negotiations for you
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="w-8 h-8 text-green-600" />
+              <div className="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Check className="w-7 h-7 text-green-600" />
               </div>
-              <h3 className="font-semibold mb-2">3. Get Your Car</h3>
+              <h3 className="font-semibold mb-1">Get Your Car</h3>
               <p className="text-secondary text-sm">
-                Car delivered to your door or pick up at dealership. That&apos;s it!
+                Delivered to your door or pickup
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Hot Deals Section */}
-      <div id="deals" className="py-16">
+      {/* All Deals Section */}
+      <div id="all-deals" className="py-16">
         <div className="container-wide">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">
-              Hot Deals This Week
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-2">
+              All Available Deals
             </h2>
             <p className="text-secondary">
-              Updated every Monday • All prices include broker fee
+              {filteredDeals.length} vehicles matching your criteria
             </p>
           </div>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {categories.map((category) => {
-              const Icon = category.icon
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all ${
-                    selectedCategory === category.id
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                      : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'
-                  }`}
-                >
-                  <Icon className="w-4 h-4 inline mr-2" />
-                  {category.name}
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Deals Grid */}
+          {/* Deals Grid - Show remaining deals */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDeals.map((deal) => (
               <div key={deal.id} className="card-surface rounded-2xl overflow-hidden hover:shadow-2xl transition-all group">
