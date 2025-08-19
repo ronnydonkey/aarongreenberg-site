@@ -1,3 +1,4 @@
+// Force rebuild
 export default function TermsPage() {
   return (
     <div className="container-narrow py-20">
