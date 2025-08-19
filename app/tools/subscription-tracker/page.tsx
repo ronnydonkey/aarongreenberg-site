@@ -123,7 +123,10 @@ export default function SubscriptionTrackerPage() {
       if (result.success) {
         // Store all transactions for review
         if (result.data?.transactions) {
+          console.log('Setting transactions:', result.data.transactions)
           setImportedTransactions(result.data.transactions)
+        } else {
+          console.log('No transactions in response:', result.data)
         }
         
         if (result.data?.subscriptions?.length > 0) {
