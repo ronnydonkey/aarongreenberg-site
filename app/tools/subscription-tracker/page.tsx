@@ -538,8 +538,8 @@ export default function SubscriptionTrackerPage() {
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5"></div>
                   <div>
-                    <p className="font-medium text-slate-50">Potential savings: $40/mo</p>
-                    <p className="text-sm text-slate-400">Pick one primary AI assistant and cancel others</p>
+                    <p className="font-medium text-slate-50">Potential savings: $480/year</p>
+                    <p className="text-sm text-slate-400">Pick one AI assistant, save $40/mo</p>
                   </div>
                 </div>
               </div>
