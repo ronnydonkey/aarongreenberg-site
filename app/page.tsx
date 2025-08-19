@@ -29,17 +29,11 @@ export default function HomePage() {
       <section className="relative min-h-[80vh] flex items-center px-6 sm:px-8 lg:px-12">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5"></div>
         <div className="container-wide relative">
-          <div className="max-w-4xl">
-            <h1 className="text-5xl md:text-7xl font-light mb-6">
-              <span className="text-primary">I Build Tools That Create Time</span>
-            </h1>
-            <p className="text-2xl md:text-3xl text-secondary mb-4 leading-relaxed max-w-3xl font-light">
-              Time to think. Time to grow. Time to live.
-            </p>
-            <p className="text-lg md:text-xl text-secondary mb-8 leading-relaxed max-w-3xl">
-              Business should feel like momentum—not molasses. I design AI-powered tools that eliminate friction, 
-              clarify chaos, and help teams run faster without burning out.
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 items-center">
+            <div className="max-w-4xl">
+              <h1 className="text-5xl md:text-7xl font-light mb-12">
+                <span className="text-primary">Hi, I'm Aaron. I solve problems. That's what I do.</span>
+              </h1>
             <div className="flex flex-wrap gap-4 mb-12">
               <Link href="/tools" className="btn btn-primary btn-lg">
                 Explore My Tools
@@ -66,6 +60,37 @@ export default function HomePage() {
                 )
               })}
             </div>
+            </div>
+            <div className="flex justify-center lg:justify-end">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl"></div>
+                <Image
+                  src="/aaron-greenberg.jpg"
+                  alt="Aaron Greenberg"
+                  width={400}
+                  height={400}
+                  className="relative rounded-2xl shadow-2xl border border-white/10"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Expansion */}
+      <section className="py-20 bg-elevated">
+        <div className="container-wide">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-xl md:text-2xl text-secondary leading-relaxed mb-6">
+              For 23 years, I solved them in Hollywood—story problems, technical problems, workflow problems, people problems, impossible-deadline problems.
+            </p>
+            <p className="text-xl md:text-2xl text-secondary leading-relaxed mb-6">
+              Now I solve them with code.
+            </p>
+            <p className="text-2xl md:text-3xl font-light text-primary">
+              Same brain. Same approach. Different tools.
+            </p>
           </div>
         </div>
       </section>
@@ -74,9 +99,10 @@ export default function HomePage() {
       <section className="py-20 bg-elevated">
         <div className="container-wide">
           <div className="mb-12">
-            <h2 className="h2 mb-4">Current Projects</h2>
+            <h2 className="h2 mb-4">What I'm Building</h2>
             <p className="text-xl text-secondary">
-              AI-powered tools that save time and money. Available individually or as a suite.
+              Currently shipping ScatterbrainAI and a suite of tools that solve the problems that waste your time. 
+              Building in public every morning from 9am-noon. You can watch me figure things out in real-time.
             </p>
           </div>
           <ToolShowcase featured />
@@ -85,6 +111,48 @@ export default function HomePage() {
               View All Tools
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* The Work */}
+      <section className="py-20">
+        <div className="container-wide">
+          <div className="max-w-4xl mx-auto mb-16">
+            <h2 className="h2 mb-8">The Work</h2>
+            <p className="text-xl text-secondary mb-6">Problems I've solved recently:</p>
+            <ul className="space-y-4 text-lg">
+              <li className="flex items-start">
+                <span className="text-primary mr-3">•</span>
+                <span>Built an AI that analyzes bank statements and finds hidden subscriptions with 95% accuracy</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-primary mr-3">•</span>
+                <span>Automated a workflow that saved a client $50K/month in manual processing</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-primary mr-3">•</span>
+                <span>Debugged a system that everyone said couldn't be fixed (it was a CORS issue)</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-primary mr-3">•</span>
+                <span>Shipped working code while everyone else was still in meetings</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* The Approach */}
+      <section className="py-20 bg-elevated">
+        <div className="container-wide">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="h2 mb-8">The Approach</h2>
+            <p className="text-xl md:text-2xl text-secondary leading-relaxed">
+              I don't overthink it. I don't overcomplicate it. I look at what's broken, figure out why, 
+              then fix it. Sometimes that's code. Sometimes it's process. Sometimes it's just pointing 
+              out that the problem isn't what everyone thinks it is.
+            </p>
           </div>
         </div>
       </section>
@@ -194,28 +262,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20">
-        <div className="container-narrow">
-          <div className="card-surface text-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
-            <Code className="w-16 h-16 text-blue-500 mx-auto mb-6" />
-            <h2 className="h2 mb-4">Let's Build Something Together</h2>
-            <p className="text-xl text-secondary mb-8 max-w-2xl mx-auto">
-              Got a problem that needs solving? I'm always looking for interesting challenges.
-              Let's chat about how AI can help.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <a
-                href="mailto:aaron@aarongreenberg.net"
-                className="btn btn-primary btn-lg"
-              >
-                <Mail className="w-5 h-5 mr-2" />
-                Get in Touch
-              </a>
-              <Link href="/tools" className="btn btn-secondary btn-lg">
-                Try My Tools
-              </Link>
-            </div>
+      {/* The Call */}
+      <section className="py-32 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10">
+        <div className="container-wide text-center">
+          <h2 className="text-4xl md:text-6xl font-light mb-8 text-primary">
+            Got a problem? Let's solve it.
+          </h2>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="mailto:aaron@aarongreenberg.net" className="btn btn-primary btn-lg">
+              <Mail className="w-5 h-5 mr-2" />
+              Email Me
+            </Link>
+            <Link href="/tools" className="btn btn-secondary btn-lg">
+              Explore Tools
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
           </div>
         </div>
       </section>
