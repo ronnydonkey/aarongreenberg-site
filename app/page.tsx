@@ -32,7 +32,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 items-center">
             <div className="max-w-4xl">
               <h1 className="text-5xl md:text-7xl font-light mb-12">
-                <span className="text-primary">Hi, I'm Aaron. I solve problems. That's what I do.</span>
+                <span className="text-primary">Hi, I'm Aaron. I solve problems.</span>
               </h1>
             <div className="flex flex-wrap gap-4 mb-12">
               <Link href="/tools" className="btn btn-primary btn-lg">
