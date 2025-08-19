@@ -26,38 +26,7 @@ interface Subscription {
 }
 
 export default function SubscriptionTrackerPage() {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([
-    {
-      id: '1',
-      name: 'Netflix',
-      provider: 'Netflix Inc.',
-      category: 'streaming',
-      amount: 15.99,
-      billingCycle: 'monthly',
-      nextBillingDate: '2024-02-01',
-      status: 'active'
-    },
-    {
-      id: '2',
-      name: 'Spotify Premium',
-      provider: 'Spotify',
-      category: 'streaming',
-      amount: 9.99,
-      billingCycle: 'monthly',
-      nextBillingDate: '2024-02-05',
-      status: 'active'
-    },
-    {
-      id: '3',
-      name: 'Adobe Creative Cloud',
-      provider: 'Adobe',
-      category: 'software',
-      amount: 54.99,
-      billingCycle: 'monthly',
-      nextBillingDate: '2024-02-10',
-      status: 'active'
-    }
-  ])
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [showAddModal, setShowAddModal] = useState(false)
   const [showUploadModal, setShowUploadModal] = useState(false)
   const [activeTab, setActiveTab] = useState<'tracker' | 'analytics' | 'review'>('tracker')
@@ -317,13 +286,22 @@ export default function SubscriptionTrackerPage() {
               <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CreditCard className="w-10 h-10 text-slate-400" />
               </div>
-              <p className="text-slate-500 mb-4">No subscriptions added yet</p>
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="btn btn-primary"
-              >
-                Add your first subscription
-              </button>
+              <p className="text-slate-500 mb-4">No subscriptions tracked yet</p>
+              <div className="flex gap-3 justify-center">
+                <button
+                  onClick={() => setShowUploadModal(true)}
+                  className="btn btn-primary"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Import Bank Statement
+                </button>
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="btn btn-secondary"
+                >
+                  Add Manually
+                </button>
+              </div>
             </div>
           ) : (
             <div className="divide-y divide-slate-800">
