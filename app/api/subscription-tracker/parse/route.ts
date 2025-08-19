@@ -15,7 +15,8 @@ export async function POST(request: NextRequest) {
     const formData = new FormData()
     
     // Add all fields from incoming form data
-    for (const [key, value] of incomingFormData.entries()) {
+    const entries = Array.from(incomingFormData.entries())
+    for (const [key, value] of entries) {
       formData.append(key, value)
     }
     
