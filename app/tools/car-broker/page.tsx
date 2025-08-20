@@ -12,7 +12,8 @@ import {
   ChevronRight,
   Filter,
   Info,
-  Check
+  Check,
+  X
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
